@@ -1,5 +1,9 @@
 .switch_container {
-  padding: 0 36px;
+  /* padding: 0 36px; */
+}
+
+.switch_container>label {
+  display: inline-block;
 }
 
 input[type="checkbox"].switch {
@@ -91,5 +95,11 @@ input[type="checkbox"].switch:checked+div>div {
 @media only screen and (max-width: 1023px) {
   .switch_container {
     padding: 0px 24px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .switch_container {
+    display: none
   }
 }

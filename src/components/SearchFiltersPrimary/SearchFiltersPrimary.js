@@ -4,7 +4,7 @@ import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 
 import css from './SearchFiltersPrimary.module.css';
-
+import { SwitchButton } from '../../components';
 const SearchFiltersPrimaryComponent = props => {
   const {
     rootClassName,
@@ -17,6 +17,7 @@ const SearchFiltersPrimaryComponent = props => {
     isSecondaryFiltersOpen,
     toggleSecondaryFiltersOpen,
     selectedSecondaryFiltersCount,
+    onChecked,
   } = props;
 
   const hasNoResult = listingsAreLoaded && resultsCount === 0;
@@ -42,18 +43,21 @@ const SearchFiltersPrimaryComponent = props => {
 
   return (
     <div className={classes}>
-      <div className={css.searchOptions}>
-        {listingsAreLoaded ? (
-          <div className={css.searchResultSummary}>
-            <span className={css.resultsFound}>
-              <FormattedMessage
-                id="SearchFiltersPrimary.foundResults"
-                values={{ count: resultsCount }}
-              />
-            </span>
-          </div>
-        ) : null}
-        {sortByComponent}
+      <div className={css.searchTop}>
+        <div className={css.searchOptions}>
+          {listingsAreLoaded ? (
+            <div className={css.searchResultSummary}>
+              <span className={css.resultsFound}>
+                <FormattedMessage
+                  id="SearchFiltersPrimary.foundResults"
+                  values={{ count: resultsCount }}
+                />
+              </span>
+            </div>
+          ) : null}
+          {sortByComponent}
+        </div>
+        <SwitchButton onChecked={onChecked} />
       </div>
 
       <div className={css.filters}>

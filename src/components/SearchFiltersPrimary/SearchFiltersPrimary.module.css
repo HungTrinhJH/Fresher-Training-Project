@@ -12,16 +12,23 @@
 }
 
 .filters {
-  & > *:not(:last-child) {
+  &>*:not(:last-child) {
     margin-right: 8px;
     margin-bottom: 8px;
     height: auto;
   }
 }
 
+.searchTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
 .searchOptions {
   display: flex;
   flex-direction: row;
+
   margin-bottom: 24px;
 }
 

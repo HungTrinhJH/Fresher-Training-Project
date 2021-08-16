@@ -14,8 +14,7 @@ import {
   SearchFiltersPrimary,
   SearchFiltersSecondary,
   SortBy,
-  Button,
-  SwitchButton,
+  
 } from '../../components';
 
 import FilterComponent from './FilterComponent';
@@ -170,7 +169,6 @@ class MainPanel extends Component {
       showAsModalMaxWidth,
       filterConfig,
       sortConfig,
-      isMapOpen,
       onMapOpen,
     } = this.props;
 
@@ -233,7 +231,6 @@ class MainPanel extends Component {
 
     return (
       <div className={classes}>
-        <SwitchButton onChecked={onMapOpen} />
         <SearchFiltersPrimary
           className={css.searchFiltersPrimary}
           sortByComponent={sortBy('desktop')}
@@ -242,6 +239,7 @@ class MainPanel extends Component {
           searchInProgress={searchInProgress}
           searchListingsError={searchListingsError}
           {...propsForSecondaryFiltersToggle}
+          onChecked={onMapOpen}
         >
           {primaryFilters.map(config => {
             return (
@@ -258,6 +256,7 @@ class MainPanel extends Component {
             );
           })}
         </SearchFiltersPrimary>
+
         <SearchFiltersMobile
           className={css.searchFiltersMobile}
           urlQueryParams={urlQueryParams}
