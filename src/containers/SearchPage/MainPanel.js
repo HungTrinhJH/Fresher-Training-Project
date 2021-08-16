@@ -14,7 +14,7 @@ import {
   SearchFiltersPrimary,
   SearchFiltersSecondary,
   SortBy,
-  
+
 } from '../../components';
 
 import FilterComponent from './FilterComponent';

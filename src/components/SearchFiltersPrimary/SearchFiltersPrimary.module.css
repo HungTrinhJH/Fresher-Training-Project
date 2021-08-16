@@ -21,15 +21,15 @@
 
 .searchTop {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  margin-bottom: 24px;
 }
 
 .searchOptions {
   display: flex;
   flex-direction: row;
-
-  margin-bottom: 24px;
+  align-items: center;
+  margin-right: 24px;
 }
 
 .searchResultSummary {
