@@ -15,6 +15,7 @@ import {
   SearchFiltersSecondary,
   SortBy,
   Button,
+  SwitchButton,
 } from '../../components';
 
 import FilterComponent from './FilterComponent';
@@ -232,9 +233,7 @@ class MainPanel extends Component {
 
     return (
       <div className={classes}>
-        <div style={{ display: 'inline', margin: '16px 0px' }}>
-          <Button onClick={onMapOpen}>{!isMapOpen ? 'Open map' : 'Hidden map'}</Button>
-        </div>
+        <SwitchButton onChecked={onMapOpen} />
         <SearchFiltersPrimary
           className={css.searchFiltersPrimary}
           sortByComponent={sortBy('desktop')}

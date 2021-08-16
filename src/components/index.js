@@ -49,6 +49,7 @@ export { default as RangeSlider } from './RangeSlider/RangeSlider';
 export { default as ResponsiveImage } from './ResponsiveImage/ResponsiveImage';
 export { default as UserDisplayName } from './UserDisplayName/UserDisplayName';
 export { default as ValidationError } from './ValidationError/ValidationError';
+export { default as SwitchButton} from './Switch/Switch'
 
 /**
  * Composite components
@@ -66,7 +67,6 @@ export { default as ImageFromFile } from './ImageFromFile/ImageFromFile';
 export { default as ListingLink } from './ListingLink/ListingLink';
 export { default as PaginationLinks } from './PaginationLinks/PaginationLinks';
 export { default as ReviewRating } from './ReviewRating/ReviewRating';
-
 // Layout helpers
 export { default as LayoutWrapperFooter } from './LayoutWrapperFooter/LayoutWrapperFooter';
 export { default as LayoutWrapperMain } from './LayoutWrapperMain/LayoutWrapperMain';

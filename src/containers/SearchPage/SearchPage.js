@@ -102,7 +102,7 @@ export class SearchPageComponent extends Component {
     this.setState({ isMobileModalOpen: false });
   }
   onMapOpen() {
-    this.setState({
+    this.setState({ 
       isDesktopModalOpen: !this.state.isDesktopModalOpen,
     });
   }
