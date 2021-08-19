@@ -71,6 +71,14 @@ export const EditListingPricingFormComponent = props => (
         ? validators.composeValidators(priceRequired, minPriceRequired)
         : priceRequired;
 
+      // Text for Cleaning fee
+      const cleaningFeeMessage = intl.formatMessage({
+        id: 'EditListingPricingForm.cleaningFee',
+      });
+      const cleaningFeePlaceholderMessage = intl.formatMessage({
+        id: 'EditListingPricingForm.cleaningInputPlaceholder',
+      });
+
       const classes = classNames(css.root, className);
       const submitReady = (updated && pristine) || ready;
       const submitInProgress = updateInProgress;
@@ -98,6 +106,16 @@ export const EditListingPricingFormComponent = props => (
             placeholder={pricePlaceholderMessage}
             currencyConfig={config.currencyConfig}
             validate={priceValidators}
+          />
+
+          <FieldCurrencyInput
+            id="cleaningFee"
+            name="cleaningFee"
+            className={css.cleaningFeeInput}
+            autoFocus
+            label={cleaningFeeMessage}
+            placeholder={cleaningFeePlaceholderMessage}
+            currencyConfig={config.currencyConfig}
           />
 
           <Button

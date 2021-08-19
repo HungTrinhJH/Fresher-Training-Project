@@ -31,3 +31,9 @@
     margin-top: 100px;
   }
 }
+
+.cleaningFeeInput {
+  flex-shrink: 0;
+  width: 100%;
+  margin-top: 36px;
+}
