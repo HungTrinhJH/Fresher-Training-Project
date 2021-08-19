@@ -88,6 +88,7 @@ export const createResourceLocatorString = (
  */
 export const findRouteByRouteName = (nameToFind, routes) => {
   const route = findRouteByName(nameToFind, routes);
+
   if (!route) {
     throw new Error(`Component "${nameToFind}" was not found.`);
   }

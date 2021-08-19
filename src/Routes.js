@@ -158,7 +158,6 @@ const Routes = (props, context) => {
       logoutInProgress,
       route,
     };
-
     // By default, our routes are exact.
     // https://reacttraining.com/react-router/web/api/Route/exact-bool
     const isExact = route.exact != null ? route.exact : true;

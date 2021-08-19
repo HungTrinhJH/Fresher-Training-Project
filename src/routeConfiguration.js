@@ -101,9 +101,9 @@ const TermsOfServicePage = loadable(() =>
 const TransactionPage = loadable(() =>
   import(/* webpackChunkName: "TransactionPage" */ './containers/TransactionPage/TransactionPage')
 );
-const ListingEquipmentPage = loadable(() =>
+const EditListingEquipmentPage = loadable(() =>
   import(
-    /* webpackChunkName: "Listing Page" */ './containers/ListingEquipmentPage/ListingEquipmentPage'
+    /* webpackChunkName: "EditListingEquipmentPage" */ './containers/EditListingEquipmentPage/EditListingEquipmentPage'
   )
 );
 // Styleguide helps you to review current components and develop new ones
@@ -161,11 +161,7 @@ const routeConfiguration = () => {
       component: ListingPage,
       loadData: pageDataLoadingAPI.ListingPage.loadData,
     },
-    {
-      path: '/listing-equipment',
-      name: 'ListingEquipmentPage',
-      component: ListingEquipmentPage,
-    },
+    
     {
       path: '/l/:slug/:id/checkout',
       name: 'CheckoutPage',
@@ -206,7 +202,7 @@ const routeConfiguration = () => {
       component: EditListingPage,
       loadData: pageDataLoadingAPI.EditListingPage.loadData,
     },
-
+    
     // Canonical path should be after the `/l/new` path since they
     // conflict and `new` is not a valid listing UUID.
     {
@@ -214,6 +210,20 @@ const routeConfiguration = () => {
       name: 'ListingPageCanonical',
       component: ListingPage,
       loadData: pageDataLoadingAPI.ListingPage.loadData,
+    },
+
+    // Listing Equipment
+    {
+      path: '/le',
+      name: 'ListingEquipmentBasePage',
+      component: RedirectToLandingPage,
+    },
+    {
+      path: '/le/:slug/:id/:type/:tab',
+      name: 'EditListingEquipmentPage',
+      auth: true,
+      component: EditListingEquipmentPage,
+      loadData: pageDataLoadingAPI.EditListingEquipmentPage.loadData,
     },
     {
       path: '/u',

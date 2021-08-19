@@ -147,7 +147,7 @@ const BookingPanel = props => {
           </div>
         </div>
 
-        {showBookingDatesForm ? (
+        {showBookingDatesForm ? ( 
           <Button
             rootClassName={css.bookButton}
             onClick={() => openBookModal(isOwnListing, isClosed, history, location)}
