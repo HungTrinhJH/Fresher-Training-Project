@@ -161,7 +161,7 @@ const routeConfiguration = () => {
       component: ListingPage,
       loadData: pageDataLoadingAPI.ListingPage.loadData,
     },
-    
+
     {
       path: '/l/:slug/:id/checkout',
       name: 'CheckoutPage',
@@ -202,7 +202,7 @@ const routeConfiguration = () => {
       component: EditListingPage,
       loadData: pageDataLoadingAPI.EditListingPage.loadData,
     },
-    
+
     // Canonical path should be after the `/l/new` path since they
     // conflict and `new` is not a valid listing UUID.
     {
@@ -217,6 +217,17 @@ const routeConfiguration = () => {
       path: '/le',
       name: 'ListingEquipmentBasePage',
       component: RedirectToLandingPage,
+    },
+    {
+      path: '/le/new',
+      name: 'NewListingEquipmentPage',
+      auth: true,
+      component: () => (
+        <NamedRedirect
+          name="EditListingEquipmentPage"
+          params={{ slug: draftSlug, id: draftId, type: 'new', tab: 'description' }}
+        />
+      ),
     },
     {
       path: '/le/:slug/:id/:type/:tab',
