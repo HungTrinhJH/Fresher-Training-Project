@@ -57,7 +57,7 @@ const SearchFiltersPrimaryComponent = props => {
           ) : null}
           {sortByComponent}
         </div>
-        <SwitchButton onChecked={onChecked} />
+        {/* <SwitchButton onChecked={onChecked} /> */}
       </div>
 
       <div className={css.filters}>
