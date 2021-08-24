@@ -170,6 +170,7 @@ class MainPanel extends Component {
       filterConfig,
       sortConfig,
       onMapOpen,
+      isMapOpen
     } = this.props;
 
     const primaryFilters = filterConfig.filter(f => f.group === 'primary');
@@ -240,6 +241,7 @@ class MainPanel extends Component {
           searchListingsError={searchListingsError}
           {...propsForSecondaryFiltersToggle}
           onChecked={onMapOpen}
+          isMapOpen={isMapOpen}
         >
           {primaryFilters.map(config => {
             return (

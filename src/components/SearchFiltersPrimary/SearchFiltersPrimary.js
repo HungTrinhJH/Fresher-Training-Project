@@ -18,6 +18,7 @@ const SearchFiltersPrimaryComponent = props => {
     toggleSecondaryFiltersOpen,
     selectedSecondaryFiltersCount,
     onChecked,
+    isMapOpen,
   } = props;
 
   const hasNoResult = listingsAreLoaded && resultsCount === 0;
@@ -57,7 +58,7 @@ const SearchFiltersPrimaryComponent = props => {
           ) : null}
           {sortByComponent}
         </div>
-        {/* <SwitchButton onChecked={onChecked} /> */}
+        <SwitchButton onChecked={onChecked} isSwitchOn={isMapOpen} />
       </div>
 
       <div className={css.filters}>

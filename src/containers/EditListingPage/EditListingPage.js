@@ -88,11 +88,12 @@ export const EditListingPageComponent = props => {
 
   const { id, type, returnURLType } = params;
   const isNewURI = type === LISTING_PAGE_PARAM_TYPE_NEW;
-  const isDraftURI = type === LISTING_PAGE_PARAM_TYPE_DRAFT;
+  const isDraftURI = type === LISTING_PAGE_PARAM_TYPE_DRAFT;  
   const isNewListingFlow = isNewURI || isDraftURI;
 
   const listingId = page.submittedListingId || (id ? new UUID(id) : null);
   const currentListing = ensureOwnListing(getOwnListing(listingId));
+  console.log('Page: ', currentListing, ' listingId:', listingId);
   const { state: currentListingState } = currentListing.attributes;
 
   const isPastDraft = currentListingState && currentListingState !== LISTING_STATE_DRAFT;

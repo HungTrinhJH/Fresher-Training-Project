@@ -17,28 +17,17 @@ import {
   EditListingPhotosPanel,
   EditListingPoliciesPanel,
   EditListingPricingPanel,
-} from '../../components';
+} from '..';
 
-import css from './EditListingWizard.module.css';
+import css from './EditListingEquipmentWizard.module.css';
 
-export const AVAILABILITY = 'availability';
-export const DESCRIPTION = 'description';
-export const FEATURES = 'features';
-export const POLICY = 'policy';
+export const GENERAL = 'general';
 export const LOCATION = 'location';
 export const PRICING = 'pricing';
-export const PHOTOS = 'photos';
+export const AVAILABILITY = 'availability';
 
 // EditListingWizardTab component supports these tabs
-export const SUPPORTED_TABS = [
-  DESCRIPTION,
-  FEATURES,
-  POLICY,
-  LOCATION,
-  PRICING,
-  AVAILABILITY,
-  PHOTOS,
-];
+export const SUPPORTED_TABS = [GENERAL, LOCATION, PRICING, AVAILABILITY];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
   const nextTabIndex = marketplaceTabs.findIndex(s => s === tab) + 1;
@@ -61,17 +50,22 @@ const redirectAfterDraftUpdate = (listingId, params, tab, marketplaceTabs, histo
   // Replace current "new" path to "draft" path.
   // Browser's back button should lead to editing current draft instead of creating a new one.
   if (params.type === LISTING_PAGE_PARAM_TYPE_NEW) {
-    const draftURI = createResourceLocatorString('EditListingPage', routes, currentPathParams, {});
+    const draftURI = createResourceLocatorString(
+      'EditListingEquipmentPage',
+      routes,
+      currentPathParams,
+      {}
+    );
     history.replace(draftURI);
   }
 
   // Redirect to next tab
   const nextPathParams = pathParamsToNextTab(currentPathParams, tab, marketplaceTabs);
-  const to = createResourceLocatorString('EditListingPage', routes, nextPathParams, {});
+  const to = createResourceLocatorString('EditListingEquipmentPage', routes, nextPathParams, {});
   history.push(to);
 };
 
-const EditListingWizardTab = props => {
+const EditListingEquipmentWizardTab = props => {
   const {
     tab,
     marketplaceTabs,
@@ -97,6 +91,7 @@ const EditListingWizardTab = props => {
   } = props;
 
   const { type } = params;
+  console.log('Type:', type);
   const isNewURI = type === LISTING_PAGE_PARAM_TYPE_NEW;
   const isDraftURI = type === LISTING_PAGE_PARAM_TYPE_DRAFT;
   const isNewListingFlow = isNewURI || isDraftURI;
@@ -266,14 +261,14 @@ const EditListingWizardTab = props => {
   }
 };
 
-EditListingWizardTab.defaultProps = {
+EditListingEquipmentWizardTab.defaultProps = {
   listing: null,
   updatedTab: null,
 };
 
 const { array, bool, func, object, oneOf, shape, string } = PropTypes;
 
-EditListingWizardTab.propTypes = {
+EditListingEquipmentWizardTab.propTypes = {
   params: shape({
     id: string.isRequired,
     slug: string.isRequired,
@@ -322,4 +317,4 @@ EditListingWizardTab.propTypes = {
   intl: intlShape.isRequired,
 };
 
-export default EditListingWizardTab;
+export default EditListingEquipmentWizardTab;
