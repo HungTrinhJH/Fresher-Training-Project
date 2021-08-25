@@ -26,7 +26,6 @@ const Tabs = props => {
   const { children, className, rootClassName, navRootClassName, tabRootClassName } = props;
   const rootClasses = rootClassName || css.root;
   const classes = classNames(rootClasses, className);
-
   const tabNavTabs = React.Children.map(children, child => {
     const { tabId, tabLabel, tabLinkProps } = child.props;
 

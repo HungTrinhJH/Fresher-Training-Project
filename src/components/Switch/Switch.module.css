@@ -7,7 +7,6 @@
 }
 
 input[type="checkbox"].switch {
-  position: absolute;
   opacity: 0;
 }
 

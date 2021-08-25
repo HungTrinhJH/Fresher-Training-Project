@@ -24,8 +24,8 @@ const SearchResultsPanel = props => {
   const panelLargeWidth = 62.5;
   const cardRenderSizes = [
     '(max-width: 767px) 100vw',
-    `(max-width: 1023px) ${panelMediumWidth / 2}vw`,
-    `(max-width: 1920px) ${panelLargeWidth / 3}vw`,
+    `(max-width: 1023px) ${panelMediumWidth / 3}vw`,
+    `(max-width: 1920px) ${panelLargeWidth / 4}vw`,
     `${panelLargeWidth / 4}vw`,
   ].join(', ');
 

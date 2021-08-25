@@ -27,8 +27,12 @@ export { default as IconKeysSuccess } from './IconKeysSuccess/IconKeysSuccess';
 export { default as IconReviewStar } from './IconReviewStar/IconReviewStar';
 export { default as IconReviewUser } from './IconReviewUser/IconReviewUser';
 export { default as IconSearch } from './IconSearch/IconSearch';
-export { default as IconSocialMediaFacebook } from './IconSocialMediaFacebook/IconSocialMediaFacebook';
-export { default as IconSocialMediaInstagram } from './IconSocialMediaInstagram/IconSocialMediaInstagram';
+export {
+  default as IconSocialMediaFacebook,
+} from './IconSocialMediaFacebook/IconSocialMediaFacebook';
+export {
+  default as IconSocialMediaInstagram,
+} from './IconSocialMediaInstagram/IconSocialMediaInstagram';
 export { default as IconSocialMediaTwitter } from './IconSocialMediaTwitter/IconSocialMediaTwitter';
 export { default as IconSpinner } from './IconSpinner/IconSpinner';
 export { default as IconSuccess } from './IconSuccess/IconSuccess';
@@ -49,7 +53,7 @@ export { default as RangeSlider } from './RangeSlider/RangeSlider';
 export { default as ResponsiveImage } from './ResponsiveImage/ResponsiveImage';
 export { default as UserDisplayName } from './UserDisplayName/UserDisplayName';
 export { default as ValidationError } from './ValidationError/ValidationError';
-export { default as SwitchButton} from './Switch/Switch'
+export { default as SwitchButton } from './Switch/Switch';
 
 /**
  * Composite components
@@ -60,7 +64,13 @@ export { default as SwitchButton} from './Switch/Switch'
 // First components that include only atomic components //
 //////////////////////////////////////////////////////////
 
-export { default as Button, PrimaryButton, SecondaryButton, InlineTextButton, SocialLoginButton } from './Button/Button';
+export {
+  default as Button,
+  PrimaryButton,
+  SecondaryButton,
+  InlineTextButton,
+  SocialLoginButton,
+} from './Button/Button';
 export { default as CookieConsent } from './CookieConsent/CookieConsent';
 export { default as ImageCarousel } from './ImageCarousel/ImageCarousel';
 export { default as ImageFromFile } from './ImageFromFile/ImageFromFile';
@@ -90,7 +100,9 @@ export { default as FieldBirthdayInput } from './FieldBirthdayInput/FieldBirthda
 export { default as FieldCheckbox } from './FieldCheckbox/FieldCheckbox';
 export { default as FieldCurrencyInput } from './FieldCurrencyInput/FieldCurrencyInput';
 export { default as FieldDateInput } from './FieldDateInput/FieldDateInput';
-export { default as FieldDateRangeController } from './FieldDateRangeController/FieldDateRangeController';
+export {
+  default as FieldDateRangeController,
+} from './FieldDateRangeController/FieldDateRangeController';
 export { default as FieldDateRangeInput } from './FieldDateRangeInput/FieldDateRangeInput';
 export { default as FieldRadioButton } from './FieldRadioButton/FieldRadioButton';
 export { default as FieldReviewRating } from './FieldReviewRating/FieldReviewRating';
@@ -101,8 +113,13 @@ export { default as FieldBoolean } from './FieldBoolean/FieldBoolean';
 export { default as FieldCheckboxGroup } from './FieldCheckboxGroup/FieldCheckboxGroup';
 export { default as FieldPhoneNumberInput } from './FieldPhoneNumberInput/FieldPhoneNumberInput';
 // Fields and inputs using old naming pattern
-export { default as LocationAutocompleteInput, LocationAutocompleteInputField } from './LocationAutocompleteInput/LocationAutocompleteInput';
-export { default as StripeBankAccountTokenInputField } from './StripeBankAccountTokenInputField/StripeBankAccountTokenInputField';
+export {
+  default as LocationAutocompleteInput,
+  LocationAutocompleteInputField,
+} from './LocationAutocompleteInput/LocationAutocompleteInput';
+export {
+  default as StripeBankAccountTokenInputField,
+} from './StripeBankAccountTokenInputField/StripeBankAccountTokenInputField';
 
 // Tab navigation
 export { default as TabNav } from './TabNav/TabNav';
@@ -144,7 +161,9 @@ export { default as SearchResultsPanel } from './SearchResultsPanel/SearchResult
 export { default as SelectMultipleFilter } from './SelectMultipleFilter/SelectMultipleFilter';
 export { default as SelectSingleFilter } from './SelectSingleFilter/SelectSingleFilter';
 export { default as SortBy } from './SortBy/SortBy';
-export { default as StripeConnectAccountStatusBox } from './StripeConnectAccountStatusBox/StripeConnectAccountStatusBox';
+export {
+  default as StripeConnectAccountStatusBox,
+} from './StripeConnectAccountStatusBox/StripeConnectAccountStatusBox';
 export { default as StripePaymentAddress } from './StripePaymentAddress/StripePaymentAddress';
 export { default as UserCard } from './UserCard/UserCard';
 
@@ -152,19 +171,37 @@ export { default as UserCard } from './UserCard/UserCard';
 // Page sections and modal content wrappers //
 //////////////////////////////////////////////
 
-export { default as LayoutWrapperAccountSettingsSideNav } from './LayoutWrapperAccountSettingsSideNav/LayoutWrapperAccountSettingsSideNav';
-export {default as LoadableComponentErrorBoundary } from './LoadableComponentErrorBoundary/LoadableComponentErrorBoundary'
-export { default as ModalMissingInformation } from './ModalMissingInformation/ModalMissingInformation';
+export {
+  default as LayoutWrapperAccountSettingsSideNav,
+} from './LayoutWrapperAccountSettingsSideNav/LayoutWrapperAccountSettingsSideNav';
+export {
+  default as LoadableComponentErrorBoundary,
+} from './LoadableComponentErrorBoundary/LoadableComponentErrorBoundary';
+export {
+  default as ModalMissingInformation,
+} from './ModalMissingInformation/ModalMissingInformation';
 export { default as ReviewModal } from './ReviewModal/ReviewModal';
 export { default as PrivacyPolicy } from './PrivacyPolicy/PrivacyPolicy';
 export { default as TermsOfService } from './TermsOfService/TermsOfService';
-export { default as EditListingAvailabilityPanel } from './EditListingAvailabilityPanel/EditListingAvailabilityPanel';
-export { default as EditListingDescriptionPanel } from './EditListingDescriptionPanel/EditListingDescriptionPanel';
-export { default as EditListingFeaturesPanel } from './EditListingFeaturesPanel/EditListingFeaturesPanel';
-export { default as EditListingLocationPanel } from './EditListingLocationPanel/EditListingLocationPanel';
+export {
+  default as EditListingAvailabilityPanel,
+} from './EditListingAvailabilityPanel/EditListingAvailabilityPanel';
+export {
+  default as EditListingDescriptionPanel,
+} from './EditListingDescriptionPanel/EditListingDescriptionPanel';
+export {
+  default as EditListingFeaturesPanel,
+} from './EditListingFeaturesPanel/EditListingFeaturesPanel';
+export {
+  default as EditListingLocationPanel,
+} from './EditListingLocationPanel/EditListingLocationPanel';
 export { default as EditListingPhotosPanel } from './EditListingPhotosPanel/EditListingPhotosPanel';
-export { default as EditListingPoliciesPanel } from './EditListingPoliciesPanel/EditListingPoliciesPanel';
-export { default as EditListingPricingPanel } from './EditListingPricingPanel/EditListingPricingPanel';
+export {
+  default as EditListingPoliciesPanel,
+} from './EditListingPoliciesPanel/EditListingPoliciesPanel';
+export {
+  default as EditListingPricingPanel,
+} from './EditListingPricingPanel/EditListingPricingPanel';
 export { default as EditListingWizard } from './EditListingWizard/EditListingWizard';
 export { default as Footer } from './Footer/Footer';
 export { default as SectionHero } from './SectionHero/SectionHero';

@@ -86,7 +86,8 @@ export const EditListingPageComponent = props => {
     updateStripeAccountError,
   } = props;
 
-  const { id, type, returnURLType } = params;
+  const { id, type, returnURLType, listingType } = params;
+
   const isNewURI = type === LISTING_PAGE_PARAM_TYPE_NEW;
   const isDraftURI = type === LISTING_PAGE_PARAM_TYPE_DRAFT;
   const isNewListingFlow = isNewURI || isDraftURI;
@@ -100,7 +101,6 @@ export const EditListingPageComponent = props => {
 
   const hasStripeOnboardingDataIfNeeded = returnURLType ? !!(currentUser && currentUser.id) : true;
   const showForm = hasStripeOnboardingDataIfNeeded && (isNewURI || currentListing.id);
-
   if (shouldRedirect) {
     const isPendingApproval =
       currentListing && currentListingState === LISTING_STATE_PENDING_APPROVAL;
@@ -108,6 +108,9 @@ export const EditListingPageComponent = props => {
     // If page has already listingId (after submit) and current listings exist
     // redirect to listing page
     const listingSlug = currentListing ? createSlug(currentListing.attributes.title) : null;
+    const listingType = currentListing.attributes.publicData.listingType
+      ? currentListing.attributes.publicData.listingType
+      : 'sauna';
 
     const redirectProps = isPendingApproval
       ? {
@@ -128,6 +131,7 @@ export const EditListingPageComponent = props => {
 
     return <NamedRedirect {...redirectProps} />;
   } else if (showForm) {
+    console.log('Im here');
     const {
       createListingDraftError = null,
       publishListingError = null,

@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import css from './Switch.module.css';
 import PropTypes from 'prop-types';
 
 const Switch = props => {
-  const [isChecked, setIsChecked] = useState(false);
-  const onSwitchChange = () => {
-    setIsChecked(!isChecked);
-    props.onChecked(isChecked);
-  };
+  // const onSwitchChange = () => {
+  //   props.onChecked(isChecked);
+  // };
+  const { isSwitchOn, onChecked } = props;
   return (
     <div className={css.switch_container}>
       <label>
         <input
-          checked={isChecked}
-          onChange={onSwitchChange}
+          checked={isSwitchOn}
+          onChange={() => onChecked(!isSwitchOn)}
           className={css.switch}
           type="checkbox"
         />

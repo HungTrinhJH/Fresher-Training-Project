@@ -28,6 +28,7 @@ import MainPanel from './MainPanel';
 import css from './SearchPage.module.css';
 import { Modal } from '../../examples';
 import { ModalWithPortal } from '../../components/Modal/Modal.example';
+import { withViewport } from '../../util/contextHelpers';
 
 const MODAL_BREAKPOINT = 768; // Search is in modal on mobile layout
 const SEARCH_WITH_MAP_DEBOUNCE = 300; // Little bit of debounce before search is initiated.
@@ -47,6 +48,16 @@ export class SearchPageComponent extends Component {
     this.onOpenMobileModal = this.onOpenMobileModal.bind(this);
     this.onCloseMobileModal = this.onCloseMobileModal.bind(this);
     this.onMapOpen = this.onMapOpen.bind(this);
+  }
+
+  componentDidUpdate(prevProps) {
+    const { width } = this.props.viewport;
+
+    if (prevProps.viewport.width !== width && width <= 768) {
+      this.setState({
+        isDesktopModalOpen: false,
+      });
+    }
   }
 
   // Callback to determine if new search is needed
@@ -106,6 +117,7 @@ export class SearchPageComponent extends Component {
       isDesktopModalOpen: !this.state.isDesktopModalOpen,
     });
   }
+
   render() {
     const {
       intl,
@@ -161,7 +173,7 @@ export class SearchPageComponent extends Component {
     const topbarClasses = this.state.isMobileModalOpen
       ? classNames(css.topbarBehindModal, css.topbar)
       : css.topbar;
-
+      
     // N.B. openMobileMap button is sticky.
     // For some reason, stickyness doesn't work on Safari, if the element is <button>
     return (
@@ -313,6 +325,7 @@ const mapDispatchToProps = dispatch => ({
 //
 // See: https://github.com/ReactTraining/react-router/issues/4671
 const SearchPage = compose(
+  withViewport,
   withRouter,
   connect(
     mapStateToProps,
