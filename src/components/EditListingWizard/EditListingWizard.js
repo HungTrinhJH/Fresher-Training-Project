@@ -68,8 +68,8 @@ const getExactTabs = type => {
 };
 
 // There are two type of listing: Sauna listing & Equipment listing
-const SAUNA_LISTING = 'sauna';
-const EQUIPMENT_LISTING = 'equipment';
+export const SAUNA_LISTING = 'sauna';
+export const EQUIPMENT_LISTING = 'equipment';
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;

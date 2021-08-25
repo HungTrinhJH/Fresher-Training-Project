@@ -24,7 +24,10 @@ import {
 
 import { EditListingWizard, NamedRedirect, Page } from '../../components';
 import { TopbarContainer } from '../../containers';
-
+import {
+  SAUNA_LISTING,
+  EQUIPMENT_LISTING,
+} from '../../components/EditListingWizard/EditListingWizard';
 import {
   requestFetchBookings,
   requestFetchAvailabilityExceptions,
@@ -112,22 +115,38 @@ export const EditListingPageComponent = props => {
       ? currentListing.attributes.publicData.listingType
       : 'sauna';
 
-    const redirectProps = isPendingApproval
-      ? {
+    const redirectProps = () => {
+      if (isPendingApproval) {
+        return {
           name: 'ListingPageVariant',
           params: {
             id: listingId.uuid,
             slug: listingSlug,
             variant: LISTING_PAGE_PENDING_APPROVAL_VARIANT,
           },
-        }
-      : {
-          name: 'ListingPage',
-          params: {
-            id: listingId.uuid,
-            slug: listingSlug,
-          },
         };
+      } else {
+        if (listingType === SAUNA_LISTING) {
+          return {
+            name: 'ListingPage',
+            params: {
+              id: listingId.uuid,
+              slug: listingSlug,
+              listingType: 'sauna',
+            },
+          };
+        } else if (listingType === EQUIPMENT_LISTING) {
+          return {
+            name: 'EquipmentListingPage',
+            params: {
+              id: listingId.uuid,
+              slug: listingSlug,
+              listingType: 'equipment',
+            },
+          };
+        }
+      }
+    };
 
     return <NamedRedirect {...redirectProps} />;
   } else if (showForm) {
