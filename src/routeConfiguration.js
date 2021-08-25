@@ -101,16 +101,16 @@ const TermsOfServicePage = loadable(() =>
 const TransactionPage = loadable(() =>
   import(/* webpackChunkName: "TransactionPage" */ './containers/TransactionPage/TransactionPage')
 );
-const EditListingEquipmentPage = loadable(() =>
-  import(
-    /* webpackChunkName: "EditListingEquipmentPage" */ './containers/EditListingEquipmentPage/EditListingEquipmentPage'
-  )
-);
+
 // Styleguide helps you to review current components and develop new ones
 const StyleguidePage = loadable(() =>
   import(/* webpackChunkName: "StyleguidePage" */ './containers/StyleguidePage/StyleguidePage')
 );
-
+const EquipmentListingPage = loadable(() =>
+  import(
+    /* webpackChunkName: "EquipmentListingPage" */ './containers/ListingPage/EquipmentListingPage'
+  )
+);
 export const ACCOUNT_SETTINGS_PAGES = [
   'ContactDetailsPage',
   'PasswordChangePage',
@@ -161,7 +161,12 @@ const routeConfiguration = () => {
       component: ListingPage,
       loadData: pageDataLoadingAPI.ListingPage.loadData,
     },
-
+    {
+      path: '/l/:listingType/:slug/:id',
+      name: 'EquipmentListingPage',
+      component: EquipmentListingPage,
+      loadData: pageDataLoadingAPI.ListingPage.loadData,
+    },
     {
       path: '/l/:slug/:id/checkout',
       name: 'CheckoutPage',
@@ -184,13 +189,49 @@ const routeConfiguration = () => {
       component: () => (
         <NamedRedirect
           name="EditListingPage"
-          params={{ slug: draftSlug, id: draftId, type: 'new', tab: 'description' }}
+          params={{
+            slug: draftSlug,
+            id: draftId,
+            type: 'new',
+            tab: 'description',
+            listingType: 'sauna',
+          }}
         />
       ),
     },
     {
-      path: '/l/:slug/:id/:type/:tab',
+      path: '/l/:listingType/:slug/:id/:type/:tab',
       name: 'EditListingPage',
+      auth: true,
+      component: EditListingPage,
+      loadData: pageDataLoadingAPI.EditListingPage.loadData,
+    },
+    // Listing Equipment
+    {
+      path: '/le',
+      name: 'ListingEquipmentBasePage',
+      component: RedirectToLandingPage,
+    },
+    {
+      path: '/le/new',
+      name: 'NewListingEquipmentPage',
+      auth: true,
+      component: () => (
+        <NamedRedirect
+          name="EditEquipmentListingPage"
+          params={{
+            slug: draftSlug,
+            listingType: 'equipment',
+            id: draftId,
+            type: 'new',
+            tab: 'description',
+          }}
+        />
+      ),
+    },
+    {
+      path: '/l/:listingType/:slug/:id/:type/:tab',
+      name: 'EditEquipmentListingPage',
       auth: true,
       component: EditListingPage,
       loadData: pageDataLoadingAPI.EditListingPage.loadData,
@@ -212,30 +253,6 @@ const routeConfiguration = () => {
       loadData: pageDataLoadingAPI.ListingPage.loadData,
     },
 
-    // Listing Equipment
-    {
-      path: '/le',
-      name: 'ListingEquipmentBasePage',
-      component: RedirectToLandingPage,
-    },
-    {
-      path: '/le/new',
-      name: 'NewListingEquipmentPage',
-      auth: true,
-      component: () => (
-        <NamedRedirect
-          name="EditListingEquipmentPage"
-          params={{ slug: draftSlug, id: draftId, type: 'new', tab: 'description' }}
-        />
-      ),
-    },
-    {
-      path: '/le/:slug/:id/:type/:tab',
-      name: 'EditListingEquipmentPage',
-      auth: true,
-      component: EditListingEquipmentPage,
-      loadData: pageDataLoadingAPI.EditListingEquipmentPage.loadData,
-    },
     {
       path: '/u',
       name: 'ProfileBasePage',

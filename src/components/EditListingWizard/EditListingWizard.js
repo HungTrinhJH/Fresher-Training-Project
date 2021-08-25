@@ -36,7 +36,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
-export const TABS = [
+export const SAUNA_TABS = [
   DESCRIPTION,
   FEATURES,
   POLICY,
@@ -45,6 +45,31 @@ export const TABS = [
   ...availabilityMaybe,
   PHOTOS,
 ];
+
+// Equipment TABS
+export const EQUIPMENT_TABS = [DESCRIPTION, LOCATION, PRICING, ...availabilityMaybe];
+
+/**
+ * Get the exact tab to use in the EditListingWinzard Component
+ *
+ * @param {String} type  - string represent type of tab to use: 'sauna', 'equipment'.
+ *
+ * @return {Array<String>} array content tabs
+ */
+const getExactTabs = type => {
+  switch (type) {
+    case SAUNA_LISTING:
+      return SAUNA_TABS;
+    case EQUIPMENT_LISTING:
+      return EQUIPMENT_TABS;
+    default:
+      return -1;
+  }
+};
+
+// There are two type of listing: Sauna listing & Equipment listing
+const SAUNA_LISTING = 'sauna';
+const EQUIPMENT_LISTING = 'equipment';
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
@@ -121,7 +146,8 @@ const tabCompleted = (tab, listing) => {
  *
  * @return object containing activity / editability of different tabs of this wizard
  */
-const tabsActive = (isNew, listing) => {
+const tabsActive = (isNew, listing, listingType) => {
+  const TABS = getExactTabs(listingType);
   return TABS.reduce((acc, tab) => {
     const previousTabIndex = TABS.findIndex(t => t === tab) - 1;
     const isActive =
@@ -285,12 +311,14 @@ class EditListingWizard extends Component {
     const rootClasses = rootClassName || css.root;
     const classes = classNames(rootClasses, className);
     const currentListing = ensureListing(listing);
-    const tabsStatus = tabsActive(isNewListingFlow, currentListing);
+    const currentListingType = params && params.hasOwnProperty('listingType') && params.listingType;
+    const CURRENT_LISTING_TABS = getExactTabs(currentListingType);
+    const tabsStatus = tabsActive(isNewListingFlow, currentListing, currentListingType);
 
     // If selectedTab is not active, redirect to the beginning of wizard
     if (!tabsStatus[selectedTab]) {
-      const currentTabIndex = TABS.indexOf(selectedTab);
-      const nearestActiveTab = TABS.slice(0, currentTabIndex)
+      const currentTabIndex = CURRENT_LISTING_TABS.indexOf(selectedTab);
+      const nearestActiveTab = CURRENT_LISTING_TABS.slice(0, currentTabIndex)
         .reverse()
         .find(t => tabsStatus[t]);
 
@@ -314,7 +342,10 @@ class EditListingWizard extends Component {
     }
 
     const tabLink = tab => {
-      return { name: 'EditListingPage', params: { ...params, tab } };
+      return {
+        name: currentListingType === SAUNA_LISTING ? 'EditListingPage' : 'EditEquipmentListingPage',
+        params: { ...params, tab },
+      };
     };
 
     const formDisabled = getAccountLinkInProgress;
@@ -373,7 +404,7 @@ class EditListingWizard extends Component {
           navRootClassName={css.nav}
           tabRootClassName={css.tab}
         >
-          {TABS.map(tab => {
+          {CURRENT_LISTING_TABS.map(tab => {
             return (
               <EditListingWizardTab
                 {...rest}
@@ -387,7 +418,7 @@ class EditListingWizard extends Component {
                 intl={intl}
                 params={params}
                 listing={listing}
-                marketplaceTabs={TABS}
+                marketplaceTabs={CURRENT_LISTING_TABS}
                 errors={errors}
                 handleCreateFlowTabScrolling={this.handleCreateFlowTabScrolling}
                 handlePublishListing={this.handlePublishListing}
@@ -490,7 +521,7 @@ EditListingWizard.propTypes = {
     id: string.isRequired,
     slug: string.isRequired,
     type: oneOf(LISTING_PAGE_PARAM_TYPES).isRequired,
-    tab: oneOf(TABS).isRequired,
+    tab: oneOf(SAUNA_TABS).isRequired,
   }).isRequired,
   stripeAccount: object,
   stripeAccountFetched: bool,
