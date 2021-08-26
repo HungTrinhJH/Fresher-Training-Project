@@ -8,6 +8,7 @@ import { ListingLink } from '../../components';
 import { EditListingAvailabilityForm } from '../../forms';
 
 import css from './EditListingAvailabilityPanel.module.css';
+import { EQUIPMENT_LISTING, SAUNA_LISTING } from '../EditListingWizard/EditListingWizard';
 
 const EditListingAvailabilityPanel = props => {
   const {
@@ -21,6 +22,7 @@ const EditListingAvailabilityPanel = props => {
     onChange,
     submitButtonText,
     panelUpdated,
+    listingType,
     updateInProgress,
     errors,
   } = props;
@@ -28,7 +30,7 @@ const EditListingAvailabilityPanel = props => {
   const classes = classNames(rootClassName || css.root, className);
   const currentListing = ensureOwnListing(listing);
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
-  const defaultAvailabilityPlan = {
+  const defaultAvailabilitySaunaPlan = {
     type: 'availability-plan/day',
     entries: [
       { dayOfWeek: 'mon', seats: 1 },
@@ -40,7 +42,30 @@ const EditListingAvailabilityPanel = props => {
       { dayOfWeek: 'sun', seats: 1 },
     ],
   };
-  const availabilityPlan = currentListing.attributes.availabilityPlan || defaultAvailabilityPlan;
+
+  const defaultAvailabilityEquipmentPlan = {
+    type: 'availability-plan/day',
+    entries: [
+      { dayOfWeek: 'mon', seats: 0 },
+      { dayOfWeek: 'tue', seats: 0 },
+      { dayOfWeek: 'wed', seats: 0 },
+      { dayOfWeek: 'thu', seats: 0 },
+      { dayOfWeek: 'fri', seats: 0 },
+      { dayOfWeek: 'sat', seats: 0 },
+      { dayOfWeek: 'sun', seats: 0 },
+    ],
+  };
+
+  const getAvailabilityPlan = () => {
+    if (currentListing.attributes.availabilityPlan) {
+      return currentListing.attributes.availabilityPlan;
+    } else if (listingType === SAUNA_LISTING) {
+      return defaultAvailabilitySaunaPlan;
+    } else if (listingType === EQUIPMENT_LISTING) {
+      return defaultAvailabilityEquipmentPlan;
+    }
+  };
+  const availabilityPlan = getAvailabilityPlan();
 
   return (
     <div className={classes}>
