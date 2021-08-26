@@ -180,7 +180,9 @@
   "EditListingDescriptionForm.categoryRequired": "You need to select a category for your sauna.",
   "EditListingTypeForm.typeEquipment": "Equipment category",
   "EditListingTypePlaceholderForm.typePlaceholderEquipment": "Choose the category of your equipment",
+  "EditListingTypeForm.typeRequiredEquipment": "You need to choose at least one category for your equipment",
   "EditListingDescriptionForm.typeRequiredEquipment": "You need to select a category for your equipment.",
+  "EditListingDescriptionForm.maxLength": "Your description can not be longer {maxLength} characters",
   "EditListingDescriptionForm.createListingDraftError": "Failed to create a draft listing. Please try again.",
   "EditListingDescriptionForm.description": "Describe your sauna",
   "EditListingDescriptionForm.descriptionPlaceholder": "How many people can fit at once? Does the sauna come with towels?",
@@ -193,11 +195,9 @@
   "EditListingDescriptionForm.titleEquipment": "The name of your equipment",
   "EditListingDescriptionForm.titlePlaceholderEquipment": "What's the name of your equipment?",
   "EditListingDescriptionForm.titleRequiredEquipment": "You need to add a equipment name.",
-
   "EditListingDescriptionForm.title": "The name of your sauna",
   "EditListingDescriptionForm.titlePlaceholder": "What's the name of your sauna?",
   "EditListingDescriptionForm.titleRequired": "You need to add a sauna name.",
-
   "EditListingDescriptionForm.updateFailed": "Failed to update listing. Please try again.",
   "EditListingDescriptionPanel.createListingTitle": "Add your sauna",
   "EditListingDescriptionPanel.createListingEquipmentTitle": "Add your equipment",

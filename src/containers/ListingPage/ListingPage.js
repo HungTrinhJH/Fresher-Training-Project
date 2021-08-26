@@ -387,7 +387,7 @@ export class ListingPageComponent extends Component {
       ) : null;
 
     //Views
-    console.log(filterConfig);
+
     const viewKey = 'view';
     const viewOptions = findOptionsForSelectFilter(viewKey, filterConfig);
 

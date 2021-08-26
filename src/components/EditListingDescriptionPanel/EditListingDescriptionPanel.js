@@ -46,7 +46,7 @@ const EditListingDescriptionPanel = props => {
 
   const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters);
   const equipmentCategoryOptions = findOptionsForSelectFilter(
-    'equipmentCategoryOption',
+    'equipmentCategory',
     config.custom.filters
   );
 

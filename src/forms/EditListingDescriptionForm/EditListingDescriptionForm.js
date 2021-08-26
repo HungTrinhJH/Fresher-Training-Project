@@ -15,6 +15,7 @@ import {
   EQUIPMENT_LISTING,
   SAUNA_LISTING,
 } from '../../components/EditListingWizard/EditListingWizard';
+import CustomCategoryMultiSelectFieldMaybe from './CustomCategoryMultiSelectFieldMaybe';
 
 const TITLE_MAX_LENGTH = 60;
 
@@ -40,7 +41,7 @@ const EditListingDescriptionFormComponent = props => (
         listingType,
       } = formRenderProps;
       const maxLengthMessage = intl.formatMessage(
-        { id: 'EditListingDescriptionForm.maxLengthEquipment' },
+        { id: 'EditListingDescriptionForm.maxLength' },
         {
           maxLength: TITLE_MAX_LENGTH,
         }
@@ -61,7 +62,7 @@ const EditListingDescriptionFormComponent = props => (
             };
           }
           case SAUNA_LISTING: {
-            return {  
+            return {
               titleMessage: intl.formatMessage({ id: 'EditListingDescriptionForm.title' }),
               titlePlaceholderMessage: intl.formatMessage({
                 id: 'EditListingDescriptionForm.titlePlaceholder',
@@ -179,6 +180,7 @@ const EditListingDescriptionFormComponent = props => (
           }
         }
       };
+
       const { updateListingError, createListingDraftError, showListingsError } = fetchErrors || {};
       const errorMessageUpdateListing = updateListingError ? (
         <p className={css.error}>
@@ -227,7 +229,7 @@ const EditListingDescriptionFormComponent = props => (
           />
         ) : null;
 
-      const viewSaunaOrEquipmentMaybe =
+      const viewSaunaOrEquipmentCategoryMaybe =
         listingType === SAUNA_LISTING ? (
           <CustomCategorySelectFieldMaybe
             id="category"
@@ -235,14 +237,16 @@ const EditListingDescriptionFormComponent = props => (
             placeholder={getType().typePlaceholderMessage}
             required={getType().typeRequiredMessage}
             name="category"
+            required={getType().required}
             categories={categories}
           />
         ) : (
-          <FieldCheckboxGroup
+          <CustomCategoryMultiSelectFieldMaybe
             label={getType().typeMessage}
             id="equipmentCategory"
             name="equipmentCategory"
-            options={equipmentCategories}
+            required={getType().required}
+            categories={equipmentCategories}
           />
         );
       return (
@@ -274,6 +278,7 @@ const EditListingDescriptionFormComponent = props => (
             placeholder={getDescription().descriptionPlaceholderMessage}
             validate={composeValidators(required(getDescription().descriptionRequiredMessage))}
           />
+          {viewSaunaOrEquipmentCategoryMaybe}
           {viewManufactureYearMaybe}
           {viewMaxUsingTimeADayMaybe}
           <Button
