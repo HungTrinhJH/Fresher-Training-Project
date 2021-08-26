@@ -61,7 +61,7 @@ const EditListingDescriptionFormComponent = props => (
             };
           }
           case SAUNA_LISTING: {
-            return {
+            return {  
               titleMessage: intl.formatMessage({ id: 'EditListingDescriptionForm.title' }),
               titlePlaceholderMessage: intl.formatMessage({
                 id: 'EditListingDescriptionForm.titlePlaceholder',
