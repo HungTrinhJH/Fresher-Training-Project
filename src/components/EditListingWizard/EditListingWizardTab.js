@@ -221,7 +221,7 @@ const EditListingWizardTab = props => {
         return 'EditListingWizard.saveEditPricing';
       }
     } else if (listingType === EQUIPMENT_LISTING) {
-      return 'EditListingWizard.saveNewPricingEquipment';
+      return 'EditListingWizard.saveNewEquipmentPricing';
     }
   };
   switch (tab) {

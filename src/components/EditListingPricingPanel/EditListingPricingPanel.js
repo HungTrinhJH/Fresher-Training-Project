@@ -10,6 +10,7 @@ import { types as sdkTypes } from '../../util/sdkLoader';
 import config from '../../config';
 
 import css from './EditListingPricingPanel.module.css';
+import { EQUIPMENT_LISTING, SAUNA_LISTING } from '../EditListingWizard/EditListingWizard';
 
 const { Money } = sdkTypes;
 
@@ -26,6 +27,7 @@ const EditListingPricingPanel = props => {
     panelUpdated,
     updateInProgress,
     errors,
+    listingType,
   } = props;
 
   const classes = classNames(rootClassName || css.root, className);
@@ -43,32 +45,54 @@ const EditListingPricingPanel = props => {
   };
 
   const isPublished = currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
-  const panelTitle = isPublished ? (
-    <FormattedMessage
-      id="EditListingPricingPanel.title"
-      values={{ listingTitle: <ListingLink listing={listing} /> }}
-    />
-  ) : (
-    <FormattedMessage id="EditListingPricingPanel.createListingTitle" />
-  );
+
+  const getPanelTile = () => {
+    if (isPublished) {
+      return (
+        <FormattedMessage
+          id="EditListingPricingPanel.title"
+          values={{ listingTitle: <ListingLink listing={listing} /> }}
+        />
+      );
+    } else {
+      if (listingType === SAUNA_LISTING) {
+        return <FormattedMessage id="EditListingPricingPanel.createListingTitle" />;
+      } else if (listingType === EQUIPMENT_LISTING) {
+        return <FormattedMessage id="EditListingPricingPanel.createEquipmentListingTitle" />;
+      }
+    }
+  };
+
+  const panelTitle = getPanelTile();
 
   const priceCurrencyValid = price instanceof Money ? price.currency === config.currency : true;
+
+  const handleDataBeforeSubmitting = values => {
+    if (listingType === SAUNA_LISTING) {
+      const { price, cleaningFee = null } = values;
+      return {
+        price,
+        publicData: {
+          cleaningFee: {
+            amount: cleaningFee.amount,
+            currency: cleaningFee.currency,
+          },
+        },
+      };
+    } else if (listingType === EQUIPMENT_LISTING) {
+      const { price } = values;
+      return {
+        price,
+      };
+    }
+  };
   const form = priceCurrencyValid ? (
     <EditListingPricingForm
       className={css.form}
       initialValues={initialValues}
+      listingType={listingType}
       onSubmit={values => {
-        const { price, cleaningFee = null } = values;
-        const updatedValues = {
-          price,
-          publicData: {
-            cleaningFee: {
-              amount: cleaningFee.amount,
-              currency: cleaningFee.currency,
-            },
-          },
-        };
-
+        const updatedValues = handleDataBeforeSubmitting(values);
         onSubmit(updatedValues);
       }}
       onChange={onChange}

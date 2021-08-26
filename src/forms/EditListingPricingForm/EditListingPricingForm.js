@@ -11,6 +11,7 @@ import { formatMoney } from '../../util/currency';
 import { types as sdkTypes } from '../../util/sdkLoader';
 import { Button, Form, FieldCurrencyInput } from '../../components';
 import css from './EditListingPricingForm.module.css';
+import { SAUNA_LISTING } from '../../components/EditListingWizard/EditListingWizard';
 
 const { Money } = sdkTypes;
 
@@ -20,6 +21,7 @@ export const EditListingPricingFormComponent = props => (
     render={formRenderProps => {
       const {
         className,
+        listingType,
         disabled,
         ready,
         handleSubmit,
@@ -85,6 +87,50 @@ export const EditListingPricingFormComponent = props => (
       const submitDisabled = invalid || disabled || submitInProgress;
       const { updateListingError, showListingsError } = fetchErrors || {};
 
+      const messageForEquipmentPricing = {
+        label: intl.formatMessage({
+          id: 'EditListingPricingForm.equipmentLabel',
+        }),
+        placeholder: intl.formatMessage({
+          id: 'EditListingPricingForm.equipmentPlaceholder',
+        }),
+      };
+      const viewPricingMaybe =
+        listingType === SAUNA_LISTING ? (
+          <>
+            <FieldCurrencyInput
+              id="price"
+              name="price"
+              className={css.priceInput}
+              autoFocus
+              label={pricePerUnitMessage}
+              placeholder={pricePlaceholderMessage}
+              currencyConfig={config.currencyConfig}
+              validate={priceValidators}
+            />
+
+            <FieldCurrencyInput
+              id="cleaningFee"
+              name="cleaningFee"
+              className={css.cleaningFeeInput}
+              autoFocus
+              label={cleaningFeeMessage}
+              placeholder={cleaningFeePlaceholderMessage}
+              currencyConfig={config.currencyConfig}
+            />
+          </>
+        ) : (
+          <FieldCurrencyInput
+            id="price"
+            name="price"
+            className={css.priceInput}
+            autoFocus
+            label={messageForEquipmentPricing.label}
+            placeholder={messageForEquipmentPricing.placeholder}
+            currencyConfig={config.currencyConfig}
+            validate={priceValidators}
+          />
+        );
       return (
         <Form onSubmit={handleSubmit} className={classes}>
           {updateListingError ? (
@@ -97,27 +143,7 @@ export const EditListingPricingFormComponent = props => (
               <FormattedMessage id="EditListingPricingForm.showListingFailed" />
             </p>
           ) : null}
-          <FieldCurrencyInput
-            id="price"
-            name="price"
-            className={css.priceInput}
-            autoFocus
-            label={pricePerUnitMessage}
-            placeholder={pricePlaceholderMessage}
-            currencyConfig={config.currencyConfig}
-            validate={priceValidators}
-          />
-
-          <FieldCurrencyInput
-            id="cleaningFee"
-            name="cleaningFee"
-            className={css.cleaningFeeInput}
-            autoFocus
-            label={cleaningFeeMessage}
-            placeholder={cleaningFeePlaceholderMessage}
-            currencyConfig={config.currencyConfig}
-          />
-
+          {viewPricingMaybe}
           <Button
             className={css.submitButton}
             type="submit"

@@ -150,7 +150,7 @@ export const EditListingPageComponent = props => {
 
     return <NamedRedirect {...redirectProps} />;
   } else if (showForm) {
-    console.log('Im here');
+    
     const {
       createListingDraftError = null,
       publishListingError = null,

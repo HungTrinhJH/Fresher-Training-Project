@@ -8,6 +8,7 @@ import { ListingLink } from '../../components';
 import { EditListingLocationForm } from '../../forms';
 
 import css from './EditListingLocationPanel.module.css';
+import { EQUIPMENT_LISTING, SAUNA_LISTING } from '../EditListingWizard/EditListingWizard';
 
 class EditListingLocationPanel extends Component {
   constructor(props) {
@@ -56,6 +57,7 @@ class EditListingLocationPanel extends Component {
       panelUpdated,
       updateInProgress,
       errors,
+      listingType,
     } = this.props;
 
     const classes = classNames(rootClassName || css.root, className);
@@ -63,14 +65,23 @@ class EditListingLocationPanel extends Component {
 
     const isPublished =
       currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
-    const panelTitle = isPublished ? (
-      <FormattedMessage
-        id="EditListingLocationPanel.title"
-        values={{ listingTitle: <ListingLink listing={listing} /> }}
-      />
-    ) : (
-      <FormattedMessage id="EditListingLocationPanel.createListingTitle" />
-    );
+    const getPanelTitle = () => {
+      if (isPublished) {
+        return (
+          <FormattedMessage
+            id="EditListingLocationPanel.title"
+            values={{ listingTitle: <ListingLink listing={listing} /> }}
+          />
+        );
+      } else {
+        if (listingType === SAUNA_LISTING) {
+          return <FormattedMessage id="EditListingLocationPanel.createListingTitle" />;
+        } else if (listingType === EQUIPMENT_LISTING) {
+          return <FormattedMessage id="EditListingLocationPanel.createEquipmentListingTitle" />;
+        }
+      }
+    };
+    const panelTitle = getPanelTitle();
 
     return (
       <div className={classes}>

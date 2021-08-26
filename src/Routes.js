@@ -12,7 +12,6 @@ import { canonicalRoutePath } from './util/routes';
 import routeConfiguration from './routeConfiguration';
 
 const canShowComponent = props => {
-  
   const { isAuthenticated, route } = props;
   const { auth } = route;
   return !auth || isAuthenticated;
