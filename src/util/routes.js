@@ -22,8 +22,7 @@ const toPathByRouteName = (nameToFind, routes) => {
  */
 export const pathByRouteName = (nameToFind, routes, params = {}) => {
   const hasEmptySlug = params && params.hasOwnProperty('slug') && params.slug === '';
-  const hasEmptyListingType =
-    params && params.hasOwnProperty('listingType') && params.listingType === '';
+  const hasEmptyListingType = params && !params.listingType;
   const pathParams = {
     ...params,
     slug: hasEmptySlug ? 'no-slug' : params.slug,

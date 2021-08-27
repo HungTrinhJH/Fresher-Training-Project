@@ -93,6 +93,20 @@ export const filters = [
     },
   },
   {
+    id: 'equipmentCategory',
+    label: 'Equipment category',
+    type: 'SelectMultipleFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_equipmentCategory'],
+    config: {
+      options: [
+        { key: 'math', label: 'Math' },
+        { key: 'physics', label: 'Physics' },
+        { key: 'chemistry', label: 'Chemistry' },
+      ],
+    },
+  },
+  {
     id: 'amenities',
     label: 'Amenities',
     type: 'SelectMultipleFilter',

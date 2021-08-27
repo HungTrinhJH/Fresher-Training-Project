@@ -10,6 +10,7 @@ import { EditListingDescriptionForm } from '../../forms';
 import config from '../../config';
 
 import css from './EditListingDescriptionPanel.module.css';
+import { EQUIPMENT_LISTING, SAUNA_LISTING } from '../EditListingWizard/EditListingWizard';
 
 const EditListingDescriptionPanel = props => {
   const {
@@ -24,6 +25,7 @@ const EditListingDescriptionPanel = props => {
     panelUpdated,
     updateInProgress,
     errors,
+    listingType,
   } = props;
 
   const classes = classNames(rootClassName || css.root, className);
@@ -36,35 +38,88 @@ const EditListingDescriptionPanel = props => {
       id="EditListingDescriptionPanel.title"
       values={{ listingTitle: <ListingLink listing={listing} /> }}
     />
-  ) : (
+  ) : listingType === SAUNA_LISTING ? (
     <FormattedMessage id="EditListingDescriptionPanel.createListingTitle" />
+  ) : (
+    <FormattedMessage id="EditListingDescriptionPanel.createListingEquipmentTitle" />
   );
 
   const categoryOptions = findOptionsForSelectFilter('category', config.custom.filters);
+  const equipmentCategoryOptions = findOptionsForSelectFilter(
+    'equipmentCategory',
+    config.custom.filters
+  );
+
+  // Initial values for Description Tab form
+  const getInitialValues = () => {
+    switch (listingType) {
+      case SAUNA_LISTING:
+        return { title, description, category: publicData.category };
+      case EQUIPMENT_LISTING:
+        return {
+          title,
+          description,
+          equipmentCategory: publicData.equipmentCategory,
+          manufactureYear: publicData.manufactureYear,
+          maxUsingTimeADay: publicData.maxUsingTimeADay,
+        };
+      default:
+        return { title, description, category: publicData.category };
+    }
+  };
+
+  // Function to get updated values
+  const getUpdatedValues = values => {
+    if (listingType === SAUNA_LISTING) {
+      const { title, description, category = [] } = values;
+      return {
+        title: title.trim(),
+        description,
+        publicData: { category, listingType: SAUNA_LISTING },
+      };
+    }
+
+    if (listingType === EQUIPMENT_LISTING) {
+      const {
+        title,
+        description,
+        equipmentCategory = [],
+        manufactureYear,
+        maxUsingTimeADay,
+      } = values;
+      return {
+        title: title.trim(),
+        description,
+        publicData: {
+          equipmentCategory,
+          manufactureYear,
+          maxUsingTimeADay,
+          listingType: EQUIPMENT_LISTING,
+        },
+      };
+    }
+  };
+
   return (
     <div className={classes}>
       <h1 className={css.title}>{panelTitle}</h1>
       <EditListingDescriptionForm
         className={css.form}
-        initialValues={{ title, description, category: publicData.category }}
+        initialValues={getInitialValues()}
         saveActionMsg={submitButtonText}
         onSubmit={values => {
-          const { title, description, category } = values;
-          const updateValues = {
-            title: title.trim(),
-            description,
-            publicData: { category },
-          };
-
-          onSubmit(updateValues);
+          const updatedValues = getUpdatedValues(values);
+          onSubmit(updatedValues);
         }}
         onChange={onChange}
         disabled={disabled}
         ready={ready}
+        listingType={listingType}
         updated={panelUpdated}
         updateInProgress={updateInProgress}
         fetchErrors={errors}
         categories={categoryOptions}
+        equipmentCategories={equipmentCategoryOptions}
       />
     </div>
   );

@@ -68,8 +68,8 @@ const getExactTabs = type => {
 };
 
 // There are two type of listing: Sauna listing & Equipment listing
-const SAUNA_LISTING = 'sauna';
-const EQUIPMENT_LISTING = 'equipment';
+export const SAUNA_LISTING = 'sauna';
+export const EQUIPMENT_LISTING = 'equipment';
 
 // Tabs are horizontal in small screens
 const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
@@ -77,10 +77,13 @@ const MAX_HORIZONTAL_NAV_SCREEN_WIDTH = 1023;
 const STRIPE_ONBOARDING_RETURN_URL_SUCCESS = 'success';
 const STRIPE_ONBOARDING_RETURN_URL_FAILURE = 'failure';
 
-const tabLabel = (intl, tab) => {
+const tabLabel = (intl, tab, listingType) => {
   let key = null;
   if (tab === DESCRIPTION) {
-    key = 'EditListingWizard.tabLabelDescription';
+    key =
+      listingType === SAUNA_LISTING
+        ? 'EditListingWizard.tabLabelDescription'
+        : 'EditListingWizard.tabLabelEquipmentDescription';
   } else if (tab === FEATURES) {
     key = 'EditListingWizard.tabLabelFeatures';
   } else if (tab === POLICY) {
@@ -410,7 +413,7 @@ class EditListingWizard extends Component {
                 {...rest}
                 key={tab}
                 tabId={`${id}_${tab}`}
-                tabLabel={tabLabel(intl, tab)}
+                tabLabel={tabLabel(intl, tab, currentListingType)}
                 tabLinkProps={tabLink(tab)}
                 selected={selectedTab === tab}
                 disabled={isNewListingFlow && !tabsStatus[tab]}
