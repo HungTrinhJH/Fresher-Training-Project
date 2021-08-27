@@ -115,7 +115,7 @@ export const EditListingPageComponent = props => {
       ? currentListing.attributes.publicData.listingType
       : 'sauna';
 
-    const redirectProps = () => {
+    const getRedirectProps = () => {
       if (isPendingApproval) {
         return {
           name: 'ListingPageVariant',
@@ -132,7 +132,6 @@ export const EditListingPageComponent = props => {
             params: {
               id: listingId.uuid,
               slug: listingSlug,
-              listingType: 'sauna',
             },
           };
         } else if (listingType === EQUIPMENT_LISTING) {
@@ -147,10 +146,9 @@ export const EditListingPageComponent = props => {
         }
       }
     };
-
+    const redirectProps = getRedirectProps();
     return <NamedRedirect {...redirectProps} />;
   } else if (showForm) {
-    
     const {
       createListingDraftError = null,
       publishListingError = null,

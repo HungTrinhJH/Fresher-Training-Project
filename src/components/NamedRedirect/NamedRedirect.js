@@ -9,6 +9,7 @@ import routeConfiguration from '../../routeConfiguration';
 import { pathByRouteName } from '../../util/routes';
 
 const NamedRedirect = props => {
+  console.log('Props named redirect: ', props);
   const { name, search, state, params, push } = props;
   const pathname = pathByRouteName(name, routeConfiguration(), params);
   return <Redirect to={{ pathname, search, state }} push={push} />;

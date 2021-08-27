@@ -11,6 +11,7 @@ const findRouteByName = (nameToFind, routes) => find(routes, route => route.name
  */
 const toPathByRouteName = (nameToFind, routes) => {
   const route = findRouteByName(nameToFind, routes);
+
   if (!route) {
     throw new Error(`Path "${nameToFind}" was not found.`);
   }
@@ -28,6 +29,7 @@ export const pathByRouteName = (nameToFind, routes, params = {}) => {
     slug: hasEmptySlug ? 'no-slug' : params.slug,
     listingType: hasEmptyListingType ? 'no-listingType' : params.listingType,
   };
+
   return toPathByRouteName(nameToFind, routes)(pathParams);
 };
 

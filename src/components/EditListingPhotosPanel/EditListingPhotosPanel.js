@@ -35,6 +35,7 @@ class EditListingPhotosPanel extends Component {
 
     const isPublished =
       currentListing.id && currentListing.attributes.state !== LISTING_STATE_DRAFT;
+
     const panelTitle = isPublished ? (
       <FormattedMessage
         id="EditListingPhotosPanel.title"
