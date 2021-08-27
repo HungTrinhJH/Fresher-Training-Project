@@ -14,6 +14,7 @@ const CustomCategorySelectFieldMaybe = props => {
       id={id}
       label={label}
       validate={required(props.required)}
+      className={css.title}
     >
       <option disabled value="">
         {placeholder}

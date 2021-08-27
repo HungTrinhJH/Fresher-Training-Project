@@ -282,6 +282,7 @@
   "EditListingWizard.saveNewPricing": "Next: Availability",
   "EditListingWizard.saveNewEquipmentPricing": "Next: Availability",
   "EditListingWizard.tabLabelDescription": "Description",
+  "EditListingWizard.tabLabelEquipmentDescription": "General",
   "EditListingWizard.tabLabelFeatures": "Amenities",
   "EditListingWizard.tabLabelAvailability": "Availability",
   "EditListingWizard.tabLabelLocation": "Location",
