@@ -222,7 +222,6 @@ const EditListingDescriptionFormComponent = props => (
           <FieldTextInput
             id="maxUsingTimeADay"
             name="maxUsingTimeADay"
-            className={css.title}
             label={getMaxUsingTimeADay().manufactureMessage}
             placeholder={getMaxUsingTimeADay().manufacturePlaceholderMessage}
             validate={composeValidators(required(getMaxUsingTimeADay().manufactureRequiredMessage))}
