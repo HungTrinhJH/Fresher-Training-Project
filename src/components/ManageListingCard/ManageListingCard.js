@@ -94,7 +94,7 @@ const createListingURL = (routes, listing) => {
         };
       } else if (listingType === EQUIPMENT_LISTING) {
         return {
-          name: 'EquipmentListingPage', 
+          name: 'EquipmentListingPage',
           params: { id, slug, listingType },
         };
       } else {
@@ -191,11 +191,21 @@ export const ManageListingCardComponent = props => {
     ? listing.attributes.publicData.listingType
     : 'sauna';
 
-  const unitTranslationKey = isNightly
-    ? 'ManageListingCard.perNight'
-    : isDaily
-    ? 'ManageListingCard.perDay'
-    : 'ManageListingCard.perUnit';
+  const getUnitTranslationKey = () => {
+    if (listingType === EQUIPMENT_LISTING) {
+      return 'ListingCard.perEquipment';
+    } else {
+      if (isNightly) {
+        return 'ListingCard.perNight';
+      } else if (isDaily) {
+        return 'ListingCard.perDay';
+      } else {
+        return 'ListingCard.perUnit';
+      }
+    }
+  };
+
+  const unitTranslationKey = getUnitTranslationKey();
 
   return (
     <div className={classes}>

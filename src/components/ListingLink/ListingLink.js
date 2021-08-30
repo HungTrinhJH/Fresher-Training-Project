@@ -18,6 +18,7 @@ import {
 import { NamedLink } from '../../components';
 
 import css from './ListingLink.module.css';
+import { EQUIPMENT_LISTING, SAUNA_LISTING } from '../EditListingWizard/EditListingWizard';
 
 const MIN_LENGTH_FOR_LONG_WORDS = 16;
 
@@ -46,19 +47,37 @@ const ListingLink = props => {
     : isDraft
     ? LISTING_PAGE_DRAFT_VARIANT
     : null;
-  const linkProps = !!variant
-    ? {
+
+  const listingType =
+    listing && listing.attributes.publicData.listingType
+      ? listing.attributes.publicData.listingType
+      : 'sauna';
+
+  const getLinkProps = () => {
+    if (!!variant) {
+      return {
         name: 'ListingPageVariant',
         params: {
           id,
           slug,
           variant,
         },
-      }
-    : {
-        name: 'ListingPage',
-        params: { id, slug },
       };
+    } else {
+      if (listingType === SAUNA_LISTING) {
+        return {
+          name: 'ListingPage',
+          params: { id, slug },
+        };
+      } else if (listingType === EQUIPMENT_LISTING) {
+        return {
+          name: 'EquipmentListingPage',
+          params: { id, slug, listingType },
+        };
+      }
+    }
+  };
+  const linkProps = getLinkProps();
   return (
     <NamedLink className={className} {...linkProps}>
       {children ? children : richTitle || ''}

@@ -26,6 +26,7 @@ import EditListingWizardTab, {
   LOCATION,
   PRICING,
   PHOTOS,
+  EQUIPMENT_PHOTOS,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
@@ -47,7 +48,13 @@ export const SAUNA_TABS = [
 ];
 
 // Equipment TABS
-export const EQUIPMENT_TABS = [DESCRIPTION, LOCATION, PRICING, ...availabilityMaybe];
+export const EQUIPMENT_TABS = [
+  DESCRIPTION,
+  LOCATION,
+  PRICING,
+  ...availabilityMaybe,
+  EQUIPMENT_PHOTOS,
+];
 
 /**
  * Get the exact tab to use in the EditListingWinzard Component
@@ -96,6 +103,8 @@ const tabLabel = (intl, tab, listingType) => {
     key = 'EditListingWizard.tabLabelAvailability';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
+  } else if (tab === EQUIPMENT_PHOTOS) {
+    key = 'EditListingWizard.tabLabelEquipmentPhotos';
   }
 
   return intl.formatMessage({ id: key });
@@ -134,6 +143,8 @@ const tabCompleted = (tab, listing) => {
     case AVAILABILITY:
       return !!availabilityPlan;
     case PHOTOS:
+      return images && images.length > 0;
+    case EQUIPMENT_PHOTOS:
       return images && images.length > 0;
     default:
       return false;

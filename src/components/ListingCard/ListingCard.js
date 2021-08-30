@@ -12,6 +12,7 @@ import config from '../../config';
 import { NamedLink, ResponsiveImage } from '../../components';
 
 import css from './ListingCard.module.css';
+import { EQUIPMENT_LISTING } from '../EditListingWizard/EditListingWizard';
 
 const MIN_LENGTH_FOR_LONG_WORDS = 10;
 
@@ -58,17 +59,29 @@ export const ListingCardComponent = props => {
   const unitType = config.bookingUnitType;
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
+  const listingType = currentListing.attributes.publicData.listingType
+    ? currentListing.attributes.publicData.listingType
+    : 'sauna';
 
-  const unitTranslationKey = isNightly
-    ? 'ListingCard.perNight'
-    : isDaily
-    ? 'ListingCard.perDay'
-    : 'ListingCard.perUnit';
+  const getUnitTranslationKey = () => {
+    if (listingType === EQUIPMENT_LISTING) {
+      return 'ListingCard.perEquipment';
+    } else {
+      if (isNightly) {
+        return 'ListingCard.perNight';
+      } else if (isDaily) {
+        return 'ListingCard.perDay';
+      } else {
+        return 'ListingCard.perUnit';
+      }
+    }
+  };
+  const unitTranslationKey = getUnitTranslationKey();
 
-  const listingType = listing.attributes.publicData.listingType;
-
+  const params = listingType === EQUIPMENT_LISTING ? { id, slug, listingType } : { id, slug };
+  const namePage = listingType === EQUIPMENT_LISTING ? 'EquipmentListingPage' : 'ListingPage';
   return (
-    <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
+    <NamedLink className={classes} name={namePage} params={params}>
       <div
         className={css.threeToTwoWrapper}
         onMouseEnter={() => setActiveListing(currentListing.id)}
