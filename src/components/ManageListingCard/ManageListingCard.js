@@ -94,7 +94,7 @@ const createListingURL = (routes, listing) => {
         };
       } else if (listingType === EQUIPMENT_LISTING) {
         return {
-          name: 'EquipmentListingPage',
+          name: 'EquipmentListingPage', 
           params: { id, slug, listingType },
         };
       } else {

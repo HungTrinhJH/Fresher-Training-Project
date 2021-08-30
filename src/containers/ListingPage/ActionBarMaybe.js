@@ -48,7 +48,7 @@ export const ActionBarMaybe = props => {
     } else {
       editParams.listingType = 'sauna';
     }
-
+    console.log('listingType:', listingType);
     return (
       <div className={css.actionBar}>
         <p className={ownListingTextClasses}>
