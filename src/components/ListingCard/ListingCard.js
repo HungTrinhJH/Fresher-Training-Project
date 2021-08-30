@@ -65,6 +65,8 @@ export const ListingCardComponent = props => {
     ? 'ListingCard.perDay'
     : 'ListingCard.perUnit';
 
+  const listingType = listing.attributes.publicData.listingType;
+
   return (
     <NamedLink className={classes} name="ListingPage" params={{ id, slug }}>
       <div

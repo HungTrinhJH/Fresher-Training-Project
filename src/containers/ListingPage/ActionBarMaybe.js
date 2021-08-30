@@ -12,6 +12,10 @@ import { NamedLink } from '../../components';
 import EditIcon from './EditIcon';
 
 import css from './ListingPage.module.css';
+import {
+  EQUIPMENT_LISTING,
+  SAUNA_LISTING,
+} from '../../components/EditListingWizard/EditListingWizard';
 
 export const ActionBarMaybe = props => {
   const { isOwnListing, listing, editParams } = props;
@@ -32,10 +36,18 @@ export const ActionBarMaybe = props => {
     }
 
     const message = isDraft ? 'ListingPage.finishListing' : 'ListingPage.editListing';
-
+    const listingType =
+      listing.attributes.publicData.listingType && listing.attributes.publicData.listingType;
     const ownListingTextClasses = classNames(css.ownListingText, {
       [css.ownListingTextPendingApproval]: isPendingApproval,
     });
+
+    // Old FTW listings don't have the listingType attribute so the default is 'sauna'
+    if (listingType) {
+      editParams.listingType = listingType;
+    } else {
+      editParams.listingType = 'sauna';
+    }
 
     return (
       <div className={css.actionBar}>
