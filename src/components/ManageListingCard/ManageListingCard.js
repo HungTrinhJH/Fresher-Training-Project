@@ -38,6 +38,7 @@ import {
 import MenuIcon from './MenuIcon';
 import Overlay from './Overlay';
 import css from './ManageListingCard.module.css';
+import { EQUIPMENT_LISTING, SAUNA_LISTING } from '../EditListingWizard/EditListingWizard';
 
 // Menu content needs the same padding
 const MENU_CONTENT_OFFSET = -12;
@@ -64,6 +65,9 @@ const priceData = (price, intl) => {
 
 const createListingURL = (routes, listing) => {
   const id = listing.id.uuid;
+  const listingType = listing.attributes.publicData.listingType
+    ? listing.attributes.publicData.listingType
+    : null;
   const slug = createSlug(listing.attributes.title);
   const isPendingApproval = listing.attributes.state === LISTING_STATE_PENDING_APPROVAL;
   const isDraft = listing.attributes.state === LISTING_STATE_DRAFT;
@@ -72,22 +76,32 @@ const createListingURL = (routes, listing) => {
     : isPendingApproval
     ? LISTING_PAGE_PENDING_APPROVAL_VARIANT
     : null;
-
-  const linkProps =
-    isPendingApproval || isDraft
-      ? {
-          name: 'ListingPageVariant',
-          params: {
-            id,
-            slug,
-            variant,
-          },
-        }
-      : {
+  const getLinkProps = () => {
+    if (isPendingApproval || isDraft) {
+      return {
+        name: 'ListingPageVariant',
+        params: {
+          id,
+          slug,
+          variant,
+        },
+      };
+    } else {
+      if (listingType === SAUNA_LISTING) {
+        return {
           name: 'ListingPage',
           params: { id, slug },
         };
-
+      } else if (listingType === EQUIPMENT_LISTING) {
+        return {
+          name: 'EquipmentListingPage',
+          params: { id, slug, listingType },
+        };
+      }
+    }
+  };
+  const linkProps = getLinkProps();
+  console.log('linkProps:', linkProps);
   return createResourceLocatorString(linkProps.name, routes, linkProps.params, {});
 };
 

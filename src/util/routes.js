@@ -29,7 +29,6 @@ export const pathByRouteName = (nameToFind, routes, params = {}) => {
     slug: hasEmptySlug ? 'no-slug' : params.slug,
     listingType: hasEmptyListingType ? 'no-listingType' : params.listingType,
   };
-
   return toPathByRouteName(nameToFind, routes)(pathParams);
 };
 

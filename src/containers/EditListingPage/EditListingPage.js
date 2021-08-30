@@ -146,6 +146,7 @@ export const EditListingPageComponent = props => {
         }
       }
     };
+    
     const redirectProps = getRedirectProps();
     return <NamedRedirect {...redirectProps} />;
   } else if (showForm) {

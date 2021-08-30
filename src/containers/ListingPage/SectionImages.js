@@ -36,7 +36,6 @@ const SectionImages = props => {
       />
     </button>
   ) : null;
-
   return (
     <div className={css.sectionImages}>
       <div className={css.threeToTwoWrapper}>
