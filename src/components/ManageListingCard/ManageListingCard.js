@@ -97,6 +97,11 @@ const createListingURL = (routes, listing) => {
           name: 'EquipmentListingPage',
           params: { id, slug, listingType },
         };
+      } else {
+        return {
+          name: 'ListingPage',
+          params: { id, slug, listingType: 'sauna' },
+        };
       }
     }
   };
@@ -181,9 +186,10 @@ export const ManageListingCardComponent = props => {
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
 
+  // Old FTW listings don't have the listingType attribute so the default is 'sauna'
   const listingType = listing.attributes.publicData.listingType
     ? listing.attributes.publicData.listingType
-    : null;
+    : 'sauna';
 
   const unitTranslationKey = isNightly
     ? 'ManageListingCard.perNight'
