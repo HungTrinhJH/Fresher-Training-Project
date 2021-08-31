@@ -202,6 +202,9 @@ export {
 export {
   default as EditListingPricingPanel,
 } from './EditListingPricingPanel/EditListingPricingPanel';
+export {
+  default as EditListingPhotosEquipmentPanel,
+} from './EditListingPhotosEquipmentPanel/EditListingPhotosEquipmentPanel'
 export { default as EditListingWizard } from './EditListingWizard/EditListingWizard';
 export { default as Footer } from './Footer/Footer';
 export { default as SectionHero } from './SectionHero/SectionHero';

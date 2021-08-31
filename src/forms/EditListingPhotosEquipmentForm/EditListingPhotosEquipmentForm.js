@@ -10,9 +10,10 @@ import { nonEmptyArray, composeValidators } from '../../util/validators';
 import { isUploadImageOverLimitError } from '../../util/errors';
 import { AddImages, Button, Form, ValidationError } from '../../components';
 
-import css from './EditListingPhotosForm.module.css';
+import css from './EditListingPhotosEquipmentForm.module.css';
 
 const ACCEPT_IMAGES = 'image/*';
+
 export class EditListingPhotosEquipmentFormComponent extends Component {
   constructor(props) {
     super(props);
@@ -116,6 +117,7 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
             imgs.map(i => (typeof i.id === 'string' ? i.imageId : i.id));
           const imageIdsFromProps = arrayOfImgIds(images);
           const imageIdsFromPreviousSubmit = arrayOfImgIds(this.submittedImages);
+
           const imageArrayHasSameImages = isEqual(imageIdsFromProps, imageIdsFromPreviousSubmit);
           const pristineSinceLastSubmit = submittedOnce && imageArrayHasSameImages;
 
@@ -139,6 +141,9 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
                   <FormattedMessage id="EditListingPhotosForm.updateFailed" />
                 </p>
               ) : null}
+              <h3>
+                <FormattedMessage id="EditListingPhotosForm.mainPhotosTitle" />
+              </h3>
               <AddImages
                 className={css.imagesField}
                 images={images}
@@ -181,6 +186,74 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
                     );
                   }}
                 </Field>
+
+                <Field
+                  component={props => {
+                    const { input, meta } = props;
+                    return (
+                      <div className={css.imageRequiredWrapper}>
+                        <input {...input} />
+                        <ValidationError fieldMeta={meta} />
+                      </div>
+                    );
+                  }}
+                  name="images"
+                  type="hidden"
+                  validate={composeValidators(nonEmptyArray(imageRequiredMessage))}
+                />
+              </AddImages>
+
+              <h3>
+                <FormattedMessage id="EditListingPhotosForm.otherPhotosTitle" />
+              </h3>
+              <AddImages
+                className={css.imagesField}
+                images={images}
+                thumbnailClassName={css.thumbnail}
+                savedImageAltText={intl.formatMessage({
+                  id: 'EditListingPhotosForm.savedImageAltText',
+                })}
+                onRemoveImage={onRemoveImage}
+              >
+                {images.length >= 1 ? (
+                  <Field
+                    id="addImage"
+                    name="addImage"
+                    accept={ACCEPT_IMAGES}
+                    form={null}
+                    label={chooseImageText}
+                    type="file"
+                    disabled={imageUploadRequested}
+                  >
+                    {fieldprops => {
+                      const { accept, input, label, disabled: fieldDisabled } = fieldprops;
+                      const { name, type } = input;
+                      const onChange = e => {
+                        const file = e.target.files[0];
+                        form.change(`addImage`, file);
+                        form.blur(`addImage`);
+                        onImageUploadHandler(file);
+                      };
+                      const inputProps = { accept, id: name, name, onChange, type };
+                      return (
+                        <div className={css.addImageWrapper}>
+                          <div className={css.aspectRatioWrapper}>
+                            {fieldDisabled ? null : (
+                              <input {...inputProps} className={css.addImageInput} />
+                            )}
+                            <label htmlFor={name} className={css.addImage}>
+                              {label}
+                            </label>
+                          </div>
+                        </div>
+                      );
+                    }}
+                  </Field>
+                ) : (
+                  <p className={css.alertOtherPhotos}>
+                    <FormattedMessage id="EditListingPhotosForm.addOtherPhotos" />
+                  </p>
+                )}
 
                 <Field
                   component={props => {

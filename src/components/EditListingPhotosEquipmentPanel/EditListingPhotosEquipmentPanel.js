@@ -3,7 +3,7 @@ import { array, bool, func, object, string } from 'prop-types';
 import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { LISTING_STATE_DRAFT } from '../../util/types';
-import { EditListingPhotosForm } from '../../forms';
+import { EditListingPhotosEquipmentForm } from '../../forms';
 import { ensureOwnListing } from '../../util/data';
 import { ListingLink } from '..';
 
@@ -48,7 +48,7 @@ class EditListingPhotosEquipmentPanel extends Component {
     return (
       <div className={classes}>
         <h1 className={css.title}>{panelTitle}</h1>
-        <EditListingPhotosForm
+        <EditListingPhotosEquipmentForm
           className={css.form}
           disabled={disabled}
           ready={ready}
