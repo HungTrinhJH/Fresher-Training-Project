@@ -3,13 +3,26 @@ import { array, bool, func, object, string } from 'prop-types';
 import { FormattedMessage } from '../../util/reactIntl';
 import classNames from 'classnames';
 import { LISTING_STATE_DRAFT } from '../../util/types';
-import { EditListingPhotosForm } from '../../forms';
+import { EditListingPhotosEquipmentForm } from '../../forms';
 import { ensureOwnListing } from '../../util/data';
-import { ListingLink } from '../../components';
+import { ListingLink } from '..';
 
-import css from './EditListingPhotosPanel.module.css';
+import css from './EditListingPhotosEquipmentPanel.module.css';
+export const MAIN_PHOTO = 'mainPhoto';
+export const OTHER_PHOTO = 'otherPhoto';
+class EditListingPhotosEquipmentPanel extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      photos: [],
+    };
+  }
 
-class EditListingPhotosPanel extends Component {
+  handleUploadPhotos = (id, type) => {
+    this.setState({
+      photos: [...this.state.photos, { type, id }],
+    });
+  };
   render() {
     const {
       className,
@@ -44,11 +57,50 @@ class EditListingPhotosPanel extends Component {
     ) : (
       <FormattedMessage id="EditListingPhotosPanel.createListingTitle" />
     );
+    const handleSubmitPhotoData = () => {
+      const newPhotosOrderId = this.state.photos;
+      const currentListingPhotos = this.props.listing.attributes.publicData.photos
+        ? this.props.listing.attributes.publicData.photos
+        : [];
 
+      const photosListingId = this.props.images.map(photo => {
+        if (photo.hasOwnProperty('file')) {
+          return {
+            type: 'new',
+            orderId: photo.id,
+            id: photo.imageId.uuid,
+          };
+        }
+        const idxInCurrentListingPhotos = currentListingPhotos.findIndex(
+          currentListingPhoto => currentListingPhoto.id === photo.id.uuid
+        );
+
+        return {
+          type: currentListingPhotos[idxInCurrentListingPhotos].type,
+          orderId: null,
+          id: photo.id.uuid,
+        };
+      });
+
+      return photosListingId.map(currentPhoto => {
+        if (currentPhoto.type === 'new') {
+          const idx = newPhotosOrderId.findIndex(newPhoto => newPhoto.id === currentPhoto.orderId);
+          return {
+            type: newPhotosOrderId[idx].type,
+            id: currentPhoto.id,
+          };
+        }
+
+        return {
+          type: currentPhoto.type,
+          id: currentPhoto.id,
+        };
+      });
+    };
     return (
       <div className={classes}>
         <h1 className={css.title}>{panelTitle}</h1>
-        <EditListingPhotosForm
+        <EditListingPhotosEquipmentForm
           className={css.form}
           disabled={disabled}
           ready={ready}
@@ -58,21 +110,30 @@ class EditListingPhotosPanel extends Component {
           onImageUpload={onImageUpload}
           onSubmit={values => {
             const { addImage, ...updateValues } = values;
-            onSubmit(updateValues);
+            const submittedPhotos = handleSubmitPhotoData();
+
+            onSubmit({
+              ...updateValues,
+              publicData: {
+                photos: submittedPhotos,
+              },
+            });
           }}
           onChange={onChange}
+          listing={listing}
           onUpdateImageOrder={onUpdateImageOrder}
           onRemoveImage={onRemoveImage}
           saveActionMsg={submitButtonText}
           updated={panelUpdated}
           updateInProgress={updateInProgress}
+          handleUploadPhotos={this.handleUploadPhotos}
         />
       </div>
     );
   }
 }
 
-EditListingPhotosPanel.defaultProps = {
+EditListingPhotosEquipmentPanel.defaultProps = {
   className: null,
   rootClassName: null,
   errors: null,
@@ -80,7 +141,7 @@ EditListingPhotosPanel.defaultProps = {
   listing: null,
 };
 
-EditListingPhotosPanel.propTypes = {
+EditListingPhotosEquipmentPanel.propTypes = {
   className: string,
   rootClassName: string,
   errors: object,
@@ -101,4 +162,4 @@ EditListingPhotosPanel.propTypes = {
   onRemoveImage: func.isRequired,
 };
 
-export default EditListingPhotosPanel;
+export default EditListingPhotosEquipmentPanel;

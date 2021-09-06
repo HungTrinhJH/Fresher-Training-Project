@@ -11,6 +11,7 @@ const findRouteByName = (nameToFind, routes) => find(routes, route => route.name
  */
 const toPathByRouteName = (nameToFind, routes) => {
   const route = findRouteByName(nameToFind, routes);
+
   if (!route) {
     throw new Error(`Path "${nameToFind}" was not found.`);
   }

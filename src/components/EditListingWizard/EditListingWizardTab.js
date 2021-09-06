@@ -21,6 +21,7 @@ import {
 
 import css from './EditListingWizard.module.css';
 import { SAUNA_LISTING, EQUIPMENT_LISTING } from './EditListingWizard';
+import EditListingPhotosEquipmentPanel from '../EditListingPhotosEquipmentPanel/EditListingPhotosEquipmentPanel';
 export const AVAILABILITY = 'availability';
 export const DESCRIPTION = 'description';
 export const FEATURES = 'features';
@@ -28,7 +29,7 @@ export const POLICY = 'policy';
 export const LOCATION = 'location';
 export const PRICING = 'pricing';
 export const PHOTOS = 'photos';
-
+export const EQUIPMENT_PHOTOS = 'equipment_photos';
 // EditListingWizardTab component supports these tabs
 export const SUPPORTED_TABS = [
   DESCRIPTION,
@@ -38,6 +39,7 @@ export const SUPPORTED_TABS = [
   PRICING,
   AVAILABILITY,
   PHOTOS,
+  EQUIPMENT_PHOTOS,
 ];
 
 const pathParamsToNextTab = (params, tab, marketplaceTabs) => {
@@ -185,7 +187,11 @@ const EditListingWizardTab = props => {
         return 'EditListingWizard.saveEditDescription';
       }
     } else if (listingType === EQUIPMENT_LISTING) {
-      return 'EditListingWizard.saveNewDescriptionEquipment';
+      if (isNewListingFlow) {
+        return 'EditListingWizard.saveNewDescriptionEquipment';
+      } else {
+        return 'EditListingWizard.saveEditDescriptionEquipment';
+      }
     }
   };
 
@@ -197,7 +203,11 @@ const EditListingWizardTab = props => {
         return 'EditListingWizard.saveEditLocation';
       }
     } else if (listingType === EQUIPMENT_LISTING) {
-      return 'EditListingWizard.saveNewLocationEquipment';
+      if (isNewListingFlow) {
+        return 'EditListingWizard.saveNewLocationEquipment';
+      } else {
+        return 'EditListingWizard.saveEditLocationEquipment';
+      }
     }
   };
 
@@ -209,7 +219,11 @@ const EditListingWizardTab = props => {
         return 'EditListingWizard.saveEditAvailability';
       }
     } else if (listingType === EQUIPMENT_LISTING) {
-      return 'EditListingWizard.saveNewAvailabilityEquipment';
+      if (isNewListingFlow) {
+        return 'EditListingWizard.saveNewAvailabilityEquipment';
+      } else {
+        return 'EditListingWizard.saveEditAvailabilityEquipment';
+      }
     }
   };
 
@@ -221,9 +235,14 @@ const EditListingWizardTab = props => {
         return 'EditListingWizard.saveEditPricing';
       }
     } else if (listingType === EQUIPMENT_LISTING) {
-      return 'EditListingWizard.saveNewEquipmentPricing';
+      if (isNewListingFlow) {
+        return 'EditListingWizard.saveNewEquipmentPricing';
+      } else {
+        return 'EditListingWizard.saveEditEquipmentPricing';
+      }
     }
   };
+
   switch (tab) {
     case DESCRIPTION: {
       const submitButtonTranslationKey = getSubmitBtnDescriptionTranslationKey();
@@ -314,6 +333,25 @@ const EditListingWizardTab = props => {
       return (
         <EditListingPhotosPanel
           {...panelProps(PHOTOS)}
+          submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
+          images={images}
+          onImageUpload={onImageUpload}
+          onRemoveImage={onRemoveImage}
+          onSubmit={values => {
+            onCompleteEditListingWizardTab(tab, values);
+          }}
+          onUpdateImageOrder={onUpdateImageOrder}
+        />
+      );
+    }
+    case EQUIPMENT_PHOTOS: {
+      const submitButtonTranslationKey = isNewListingFlow
+        ? 'EditListingWizard.saveNewPhotos'
+        : 'EditListingWizard.saveEditPhotos';
+
+      return (
+        <EditListingPhotosEquipmentPanel
+          {...panelProps(EQUIPMENT_PHOTOS)}
           submitButtonText={intl.formatMessage({ id: submitButtonTranslationKey })}
           images={images}
           onImageUpload={onImageUpload}

@@ -196,6 +196,7 @@ export class ListingPageComponent extends Component {
       lineItems,
       fetchLineItemsInProgress,
       fetchLineItemsError,
+      match,
     } = this.props;
 
     const listingId = new UUID(rawParams.id);
@@ -205,7 +206,6 @@ export class ListingPageComponent extends Component {
       isPendingApprovalVariant || isDraftVariant
         ? ensureOwnListing(getOwnListing(listingId))
         : ensureListing(getListing(listingId));
-
     const listingSlug = rawParams.slug || createSlug(currentListing.attributes.title || '');
     const params = { slug: listingSlug, ...rawParams };
 
@@ -218,6 +218,9 @@ export class ListingPageComponent extends Component {
       currentListing.id && currentListing.attributes.state !== LISTING_STATE_PENDING_APPROVAL;
 
     const pendingIsApproved = isPendingApprovalVariant && isApproved;
+    const currrenListingType = currentListing.attributes.publicData.listingType
+      ? currentListing.attributes.publicData.listingType
+      : 'sauna';
 
     // If a /pending-approval URL is shared, the UI requires
     // authentication and attempts to fetch the listing from own
@@ -387,7 +390,6 @@ export class ListingPageComponent extends Component {
       ) : null;
 
     //Views
-
     const viewKey = 'view';
     const viewOptions = findOptionsForSelectFilter(viewKey, filterConfig);
 
@@ -439,8 +441,15 @@ export class ListingPageComponent extends Component {
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
                   />
-                  <SectionDescriptionMaybe description={description} />
-                  <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />
+                  <SectionDescriptionMaybe
+                    description={description}
+                    listingType={currrenListingType}
+                  />
+                  <SectionFeaturesMaybe
+                    options={amenityOptions}
+                    publicData={publicData}
+                    listingType={currrenListingType}
+                  />
                   <SectionRulesMaybe publicData={publicData} />
                   <SectionViewMaybe options={viewOptions} publicData={publicData} />
 

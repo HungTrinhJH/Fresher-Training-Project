@@ -38,6 +38,7 @@ import {
 import MenuIcon from './MenuIcon';
 import Overlay from './Overlay';
 import css from './ManageListingCard.module.css';
+import { EQUIPMENT_LISTING, SAUNA_LISTING } from '../EditListingWizard/EditListingWizard';
 
 // Menu content needs the same padding
 const MENU_CONTENT_OFFSET = -12;
@@ -64,6 +65,9 @@ const priceData = (price, intl) => {
 
 const createListingURL = (routes, listing) => {
   const id = listing.id.uuid;
+  const listingType = listing.attributes.publicData.listingType
+    ? listing.attributes.publicData.listingType
+    : null;
   const slug = createSlug(listing.attributes.title);
   const isPendingApproval = listing.attributes.state === LISTING_STATE_PENDING_APPROVAL;
   const isDraft = listing.attributes.state === LISTING_STATE_DRAFT;
@@ -72,22 +76,36 @@ const createListingURL = (routes, listing) => {
     : isPendingApproval
     ? LISTING_PAGE_PENDING_APPROVAL_VARIANT
     : null;
-
-  const linkProps =
-    isPendingApproval || isDraft
-      ? {
-          name: 'ListingPageVariant',
-          params: {
-            id,
-            slug,
-            variant,
-          },
-        }
-      : {
+  const getLinkProps = () => {
+    if (isPendingApproval || isDraft) {
+      return {
+        name: 'ListingPageVariant',
+        params: {
+          id,
+          slug,
+          variant,
+        },
+      };
+    } else {
+      if (listingType === SAUNA_LISTING) {
+        return {
           name: 'ListingPage',
           params: { id, slug },
         };
-
+      } else if (listingType === EQUIPMENT_LISTING) {
+        return {
+          name: 'EquipmentListingPage',
+          params: { id, slug, listingType },
+        };
+      } else {
+        return {
+          name: 'ListingPage',
+          params: { id, slug, listingType: 'sauna' },
+        };
+      }
+    }
+  };
+  const linkProps = getLinkProps();
   return createResourceLocatorString(linkProps.name, routes, linkProps.params, {});
 };
 
@@ -168,11 +186,26 @@ export const ManageListingCardComponent = props => {
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
 
-  const unitTranslationKey = isNightly
-    ? 'ManageListingCard.perNight'
-    : isDaily
-    ? 'ManageListingCard.perDay'
-    : 'ManageListingCard.perUnit';
+  // Old FTW listings don't have the listingType attribute so the default is 'sauna'
+  const listingType = listing.attributes.publicData.listingType
+    ? listing.attributes.publicData.listingType
+    : 'sauna';
+
+  const getUnitTranslationKey = () => {
+    if (listingType === EQUIPMENT_LISTING) {
+      return 'ListingCard.perEquipment';
+    } else {
+      if (isNightly) {
+        return 'ListingCard.perNight';
+      } else if (isDaily) {
+        return 'ListingCard.perDay';
+      } else {
+        return 'ListingCard.perUnit';
+      }
+    }
+  };
+
+  const unitTranslationKey = getUnitTranslationKey();
 
   return (
     <div className={classes}>
@@ -259,7 +292,13 @@ export const ManageListingCardComponent = props => {
               <NamedLink
                 className={css.finishListingDraftLink}
                 name="EditListingPage"
-                params={{ id, slug, type: LISTING_PAGE_PARAM_TYPE_DRAFT, tab: 'photos' }}
+                params={{
+                  id,
+                  slug,
+                  type: LISTING_PAGE_PARAM_TYPE_DRAFT,
+                  tab: 'photos',
+                  listingType,
+                }}
               >
                 <FormattedMessage id="ManageListingCard.finishListingDraft" />
               </NamedLink>
@@ -342,7 +381,7 @@ export const ManageListingCardComponent = props => {
           <NamedLink
             className={css.manageLink}
             name="EditListingPage"
-            params={{ id, slug, type: editListingLinkType, tab: 'description' }}
+            params={{ id, slug, type: editListingLinkType, tab: 'description', listingType }}
           >
             <FormattedMessage id="ManageListingCard.editListing" />
           </NamedLink>
@@ -354,7 +393,7 @@ export const ManageListingCardComponent = props => {
               <NamedLink
                 className={css.manageLink}
                 name="EditListingPage"
-                params={{ id, slug, type: editListingLinkType, tab: 'availability' }}
+                params={{ id, slug, type: editListingLinkType, tab: 'availability', listingType }}
               >
                 <FormattedMessage id="ManageListingCard.manageAvailability" />
               </NamedLink>

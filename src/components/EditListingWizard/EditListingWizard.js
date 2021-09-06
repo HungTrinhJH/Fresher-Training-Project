@@ -26,6 +26,7 @@ import EditListingWizardTab, {
   LOCATION,
   PRICING,
   PHOTOS,
+  EQUIPMENT_PHOTOS,
 } from './EditListingWizardTab';
 import css from './EditListingWizard.module.css';
 
@@ -36,6 +37,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
+import { SUPPORTED_TABS } from './EditListingWizardTab';
 export const SAUNA_TABS = [
   DESCRIPTION,
   FEATURES,
@@ -47,7 +49,13 @@ export const SAUNA_TABS = [
 ];
 
 // Equipment TABS
-export const EQUIPMENT_TABS = [DESCRIPTION, LOCATION, PRICING, ...availabilityMaybe];
+export const EQUIPMENT_TABS = [
+  DESCRIPTION,
+  LOCATION,
+  PRICING,
+  ...availabilityMaybe,
+  EQUIPMENT_PHOTOS,
+];
 
 /**
  * Get the exact tab to use in the EditListingWinzard Component
@@ -96,6 +104,8 @@ const tabLabel = (intl, tab, listingType) => {
     key = 'EditListingWizard.tabLabelAvailability';
   } else if (tab === PHOTOS) {
     key = 'EditListingWizard.tabLabelPhotos';
+  } else if (tab === EQUIPMENT_PHOTOS) {
+    key = 'EditListingWizard.tabLabelEquipmentPhotos';
   }
 
   return intl.formatMessage({ id: key });
@@ -134,6 +144,8 @@ const tabCompleted = (tab, listing) => {
     case AVAILABILITY:
       return !!availabilityPlan;
     case PHOTOS:
+      return images && images.length > 0;
+    case EQUIPMENT_PHOTOS:
       return images && images.length > 0;
     default:
       return false;
@@ -524,7 +536,7 @@ EditListingWizard.propTypes = {
     id: string.isRequired,
     slug: string.isRequired,
     type: oneOf(LISTING_PAGE_PARAM_TYPES).isRequired,
-    tab: oneOf(SAUNA_TABS).isRequired,
+    tab: oneOf(SUPPORTED_TABS).isRequired,
   }).isRequired,
   stripeAccount: object,
   stripeAccountFetched: bool,

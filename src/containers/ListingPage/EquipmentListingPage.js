@@ -52,6 +52,9 @@ import SectionHostMaybe from './SectionHostMaybe';
 import SectionRulesMaybe from './SectionRulesMaybe';
 import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.module.css';
+import SectionManufactureViewMaybe from './SectionManufactureViewMaybe';
+import SectionMaxUsingTimeADayMaybe from './SectionMaxUsingTimeADayYear';
+import SectionOtherPhotosMaybe from './SectionOtherPhotosMaybe';
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
@@ -196,6 +199,7 @@ export class EquipmentListingPageComponent extends Component {
       lineItems,
       fetchLineItemsInProgress,
       fetchLineItemsError,
+      match,
     } = this.props;
 
     const listingId = new UUID(rawParams.id);
@@ -218,7 +222,9 @@ export class EquipmentListingPageComponent extends Component {
       currentListing.id && currentListing.attributes.state !== LISTING_STATE_PENDING_APPROVAL;
 
     const pendingIsApproved = isPendingApprovalVariant && isApproved;
-
+    const currrenListingType = currentListing.attributes.publicData.listingType
+      ? currentListing.attributes.publicData.listingType
+      : 'sauna';
     // If a /pending-approval URL is shared, the UI requires
     // authentication and attempts to fetch the listing from own
     // listings. This will fail with 403 Forbidden if the author is
@@ -376,7 +382,7 @@ export class EquipmentListingPageComponent extends Component {
       </NamedLink>
     );
 
-    const amenityOptions = findOptionsForSelectFilter('amenities', filterConfig);
+    const equipmentCategoryOptions = findOptionsForSelectFilter('equipmentCategory', filterConfig);
     const categoryOptions = findOptionsForSelectFilter('category', filterConfig);
     const category =
       publicData && publicData.category ? (
@@ -426,6 +432,7 @@ export class EquipmentListingPageComponent extends Component {
                 onImageCarouselClose={() => this.setState({ imageCarouselOpen: false })}
                 handleViewPhotosClick={handleViewPhotosClick}
                 onManageDisableScrolling={onManageDisableScrolling}
+                listingType={currrenListingType}
               />
               <div className={css.contentContainer}>
                 <SectionAvatar user={currentAuthor} params={params} />
@@ -439,10 +446,18 @@ export class EquipmentListingPageComponent extends Component {
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
                   />
-                  <SectionDescriptionMaybe description={description} />
-                  <SectionFeaturesMaybe options={amenityOptions} publicData={publicData} />
-                  <SectionRulesMaybe publicData={publicData} />
-                  <SectionViewMaybe options={viewOptions} publicData={publicData} />
+                  <SectionDescriptionMaybe
+                    description={description}
+                    listingType={currrenListingType}
+                  />
+                  <SectionFeaturesMaybe
+                    listingType={currrenListingType}
+                    options={equipmentCategoryOptions}
+                    publicData={publicData}
+                  />
+
+                  <SectionManufactureViewMaybe publicData={publicData} />
+                  <SectionMaxUsingTimeADayMaybe publicData={publicData} />
 
                   <SectionMapMaybe
                     geolocation={geolocation}
@@ -463,6 +478,7 @@ export class EquipmentListingPageComponent extends Component {
                     currentUser={currentUser}
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
+                  {/* <SectionOtherPhotosMaybe /> */}
                 </div>
                 <BookingPanel
                   className={css.bookingPanel}
@@ -493,7 +509,7 @@ export class EquipmentListingPageComponent extends Component {
   }
 }
 
-ListingPageComponent.defaultProps = {
+EquipmentListingPageComponent.defaultProps = {
   unitType: config.bookingUnitType,
   currentUser: null,
   enquiryModalOpenForListingId: null,
@@ -508,7 +524,7 @@ ListingPageComponent.defaultProps = {
   fetchLineItemsError: null,
 };
 
-ListingPageComponent.propTypes = {
+EquipmentListingPageComponent.propTypes = {
   // from withRouter
   history: shape({
     push: func.isRequired,
