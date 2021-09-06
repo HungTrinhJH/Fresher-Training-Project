@@ -37,6 +37,7 @@ const availabilityMaybe = config.enableAvailability ? [AVAILABILITY] : [];
 // Note 1: You need to change save button translations for new listing flow
 // Note 2: Ensure that draft listing is created after the first panel
 // and listing publishing happens after last panel.
+import { SUPPORTED_TABS } from './EditListingWizardTab';
 export const SAUNA_TABS = [
   DESCRIPTION,
   FEATURES,
@@ -535,7 +536,7 @@ EditListingWizard.propTypes = {
     id: string.isRequired,
     slug: string.isRequired,
     type: oneOf(LISTING_PAGE_PARAM_TYPES).isRequired,
-    tab: oneOf(SAUNA_TABS).isRequired,
+    tab: oneOf(SUPPORTED_TABS).isRequired,
   }).isRequired,
   stripeAccount: object,
   stripeAccountFetched: bool,

@@ -17,9 +17,21 @@
   float: left;
   position: relative;
   width: 100%;
-  margin: 0;
+  margin: 24px 0 0 0;
+
   overflow: hidden;
-  background-color: var(--matterColorNegative); /* Loading BG color */
+  background-color: var(--matterColorNegative);
+
+  @media (--viewportLarge) {
+    width: calc(50% - 12px);
+    margin: 0 24px 24px 0;
+
+    &:nth-child(even) {
+      margin: 0 0 24px 0;
+    }
+  }
+
+  /* Loading BG color */
 }
 
 .threeToTwoWrapper {

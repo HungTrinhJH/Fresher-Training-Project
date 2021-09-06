@@ -203,7 +203,7 @@ const config = {
   sdk: {
     clientId: sdkClientId,
     baseUrl: sdkBaseUrl,
-    transitVerbose: sdkTransitVerbose,
+    sdkTransitVerbose,
   },
   sortSearchByDistance,
   currency,

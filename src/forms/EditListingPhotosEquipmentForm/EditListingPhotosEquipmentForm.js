@@ -13,22 +13,32 @@ import { AddImages, Button, Form, ValidationError } from '../../components';
 import css from './EditListingPhotosEquipmentForm.module.css';
 
 const ACCEPT_IMAGES = 'image/*';
-
+export const MAIN_PHOTO = 'mainPhoto';
+export const OTHER_PHOTO = 'otherPhoto';
 export class EditListingPhotosEquipmentFormComponent extends Component {
   constructor(props) {
     super(props);
-    this.state = { imageUploadRequested: false };
+    this.state = {
+      imageUploadRequested: false,
+    };
     this.onImageUploadHandler = this.onImageUploadHandler.bind(this);
     this.submittedImages = [];
   }
 
-  onImageUploadHandler(file) {
+  onImageUploadHandler(file, type) {
+    console.log(type);
     if (file) {
-      this.setState({ imageUploadRequested: true });
+      this.setState({
+        imageUploadRequested: true,
+      });
+      const PHOTO_ID = `${file.name}_${Date.now()}_${type}`;
       this.props
-        .onImageUpload({ id: `${file.name}_${Date.now()}`, file })
+        .onImageUpload({ id: PHOTO_ID, file })
         .then(() => {
-          this.setState({ imageUploadRequested: false });
+          this.setState({
+            imageUploadRequested: false,
+          });
+          this.props.handleUploadPhotos(PHOTO_ID, type);
         })
         .catch(() => {
           this.setState({ imageUploadRequested: false });
@@ -60,6 +70,7 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
             saveActionMsg,
             updated,
             updateInProgress,
+            listing,
           } = formRenderProps;
 
           const chooseImageText = (
@@ -128,6 +139,28 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
 
           const classes = classNames(css.root, className);
 
+          const listingIds = listing.attributes.publicData.photos || [];
+
+          const splitPhotoByType = () => {
+            const photos = {
+              mainPhoto: [],
+              otherPhoto: [],
+            };
+            for (let img of images) {
+              if (img.hasOwnProperty('file')) {
+                const photoType = img.id.split('_')[img.id.split('_').length - 1];
+                photos[photoType].push(img);
+              } else {
+                const idxInListing = listingIds.findIndex(photo => photo.id === img.id.uuid);
+                if (idxInListing !== -1) {
+                  photos[listingIds[idxInListing].type].push(img);
+                }
+              }
+            }
+            return photos;
+          };
+          const photosByType = splitPhotoByType();
+          console.log('photosByType:', photosByType);
           return (
             <Form
               className={classes}
@@ -146,7 +179,7 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
               </h3>
               <AddImages
                 className={css.imagesField}
-                images={images}
+                images={photosByType.mainPhoto}
                 thumbnailClassName={css.thumbnail}
                 savedImageAltText={intl.formatMessage({
                   id: 'EditListingPhotosForm.savedImageAltText',
@@ -169,7 +202,7 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
                       const file = e.target.files[0];
                       form.change(`addImage`, file);
                       form.blur(`addImage`);
-                      onImageUploadHandler(file);
+                      onImageUploadHandler(file, MAIN_PHOTO);
                     };
                     const inputProps = { accept, id: name, name, onChange, type };
                     return (
@@ -206,19 +239,19 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
               <h3>
                 <FormattedMessage id="EditListingPhotosForm.otherPhotosTitle" />
               </h3>
-              <AddImages
-                className={css.imagesField}
-                images={images}
-                thumbnailClassName={css.thumbnail}
-                savedImageAltText={intl.formatMessage({
-                  id: 'EditListingPhotosForm.savedImageAltText',
-                })}
-                onRemoveImage={onRemoveImage}
-              >
-                {images.length >= 1 ? (
+              {images.length > 0 ? (
+                <AddImages
+                  className={css.imagesField}
+                  images={photosByType.otherPhoto}
+                  thumbnailClassName={css.thumbnail}
+                  savedImageAltText={intl.formatMessage({
+                    id: 'EditListingPhotosForm.savedImageAltText',
+                  })}
+                  onRemoveImage={onRemoveImage}
+                >
                   <Field
-                    id="addImage"
-                    name="addImage"
+                    id="addOtherImage"
+                    name="addOtherImage"
                     accept={ACCEPT_IMAGES}
                     form={null}
                     label={chooseImageText}
@@ -230,9 +263,9 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
                       const { name, type } = input;
                       const onChange = e => {
                         const file = e.target.files[0];
-                        form.change(`addImage`, file);
-                        form.blur(`addImage`);
-                        onImageUploadHandler(file);
+                        form.change(`addOtherImage`, file);
+                        form.blur(`addOtherImage`);
+                        onImageUploadHandler(file, OTHER_PHOTO);
                       };
                       const inputProps = { accept, id: name, name, onChange, type };
                       return (
@@ -249,27 +282,23 @@ export class EditListingPhotosEquipmentFormComponent extends Component {
                       );
                     }}
                   </Field>
-                ) : (
-                  <p className={css.alertOtherPhotos}>
-                    <FormattedMessage id="EditListingPhotosForm.addOtherPhotos" />
-                  </p>
-                )}
 
-                <Field
-                  component={props => {
-                    const { input, meta } = props;
-                    return (
-                      <div className={css.imageRequiredWrapper}>
-                        <input {...input} />
-                        <ValidationError fieldMeta={meta} />
-                      </div>
-                    );
-                  }}
-                  name="images"
-                  type="hidden"
-                  validate={composeValidators(nonEmptyArray(imageRequiredMessage))}
-                />
-              </AddImages>
+                  <Field
+                    component={props => {
+                      const { input, meta } = props;
+                      return (
+                        <div className={css.imageRequiredWrapper}>
+                          <input {...input} />
+                          <ValidationError fieldMeta={meta} />
+                        </div>
+                      );
+                    }}
+                    name="images"
+                    type="hidden"
+                    validate={composeValidators(nonEmptyArray(imageRequiredMessage))}
+                  />
+                </AddImages>
+              ) : null}
               {uploadImageFailed}
 
               <p className={css.tip}>

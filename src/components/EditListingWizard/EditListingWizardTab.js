@@ -243,7 +243,6 @@ const EditListingWizardTab = props => {
     }
   };
 
-  
   switch (tab) {
     case DESCRIPTION: {
       const submitButtonTranslationKey = getSubmitBtnDescriptionTranslationKey();

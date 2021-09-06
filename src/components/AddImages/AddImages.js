@@ -36,8 +36,8 @@ const ThumbnailWrapper = props => {
     return (
       <ImageFromFile
         id={image.id}
-        className={className}
         rootClassName={css.thumbnail}
+        className={className}
         file={image.file}
       >
         {removeButton}
