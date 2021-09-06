@@ -54,6 +54,7 @@ import SectionMapMaybe from './SectionMapMaybe';
 import css from './ListingPage.module.css';
 import SectionManufactureViewMaybe from './SectionManufactureViewMaybe';
 import SectionMaxUsingTimeADayMaybe from './SectionMaxUsingTimeADayYear';
+import SectionOtherPhotosMaybe from './SectionOtherPhotosMaybe';
 
 const MIN_LENGTH_FOR_LONG_WORDS_IN_TITLE = 16;
 
@@ -431,6 +432,7 @@ export class EquipmentListingPageComponent extends Component {
                 onImageCarouselClose={() => this.setState({ imageCarouselOpen: false })}
                 handleViewPhotosClick={handleViewPhotosClick}
                 onManageDisableScrolling={onManageDisableScrolling}
+                listingType={currrenListingType}
               />
               <div className={css.contentContainer}>
                 <SectionAvatar user={currentAuthor} params={params} />
@@ -476,6 +478,7 @@ export class EquipmentListingPageComponent extends Component {
                     currentUser={currentUser}
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
+                  {/* <SectionOtherPhotosMaybe /> */}
                 </div>
                 <BookingPanel
                   className={css.bookingPanel}

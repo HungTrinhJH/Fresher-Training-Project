@@ -4,7 +4,8 @@ import { ResponsiveImage, Modal, ImageCarousel } from '../../components';
 import ActionBarMaybe from './ActionBarMaybe';
 
 import css from './ListingPage.module.css';
-
+export const SAUNA_LISTING = 'sauna';
+export const EQUIPMENT_LISTING = 'equipment';
 const SectionImages = props => {
   const {
     title,
@@ -15,11 +16,36 @@ const SectionImages = props => {
     imageCarouselOpen,
     onImageCarouselClose,
     onManageDisableScrolling,
+    listingType,
   } = props;
-
   const hasImages = listing.images && listing.images.length > 0;
-  const firstImage = hasImages ? listing.images[0] : null;
+  const getImageInformation = () => {
+    const listingIds = listing.attributes.publicData.photos
+      ? listing.attributes.publicData.photos
+      : [];
+    if (listingType === SAUNA_LISTING || listingIds.length === 0) {
+      const firstImage = hasImages ? listing.images[0] : null;
+      return {
+        images: listing.images,
+        firstImage,
+      };
+    } else if (listingType === EQUIPMENT_LISTING) {
+      // Get the main photo only
+      const images = [];
+      for (let img of listing.images) {
+        const idxInListingIds = listingIds.findIndex(photo => photo.id === img.id.uuid);
+        if (listingIds[idxInListingIds].type === 'mainPhoto') {
+          images.push(img);
+        }
+      }
+      const firstImage = hasImages ? images[0] : null;
 
+      return {
+        firstImage,
+        images,
+      };
+    }
+  };
   // Action bar is wrapped with a div that prevents the click events
   // to the parent that would otherwise open the image carousel
   const actionBar = listing.id ? (
@@ -32,7 +58,7 @@ const SectionImages = props => {
     <button className={css.viewPhotos} onClick={handleViewPhotosClick}>
       <FormattedMessage
         id="ListingPage.viewImagesButton"
-        values={{ count: listing.images.length }}
+        values={{ count: getImageInformation().images.length }}
       />
     </button>
   ) : null;
@@ -44,7 +70,7 @@ const SectionImages = props => {
           <ResponsiveImage
             rootClassName={css.rootForImage}
             alt={title}
-            image={firstImage}
+            image={getImageInformation().firstImage}
             variants={[
               'landscape-crop',
               'landscape-crop2x',
@@ -65,7 +91,7 @@ const SectionImages = props => {
         usePortal
         onManageDisableScrolling={onManageDisableScrolling}
       >
-        <ImageCarousel images={listing.images} />
+        <ImageCarousel images={getImageInformation().images} />
       </Modal>
     </div>
   );

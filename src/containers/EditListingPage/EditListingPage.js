@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { intlShape, injectIntl } from '../../util/reactIntl';
 import { connect } from 'react-redux';
 import { types as sdkTypes } from '../../util/sdkLoader';
-import {  
+import {
   LISTING_PAGE_PARAM_TYPE_DRAFT,
   LISTING_PAGE_PARAM_TYPE_NEW,
   LISTING_PAGE_PARAM_TYPES,
@@ -146,7 +146,7 @@ export const EditListingPageComponent = props => {
         }
       }
     };
-    
+
     const redirectProps = getRedirectProps();
     return <NamedRedirect {...redirectProps} />;
   } else if (showForm) {

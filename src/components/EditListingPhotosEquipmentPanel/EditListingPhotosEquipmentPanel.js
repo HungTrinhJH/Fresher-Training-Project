@@ -71,7 +71,6 @@ class EditListingPhotosEquipmentPanel extends Component {
             id: photo.imageId.uuid,
           };
         }
-
         const idxInCurrentListingPhotos = currentListingPhotos.findIndex(
           currentListingPhoto => currentListingPhoto.id === photo.id.uuid
         );
