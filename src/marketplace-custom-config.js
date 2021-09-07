@@ -76,7 +76,7 @@ export const filters = [
   {
     id: 'category',
     label: 'Category',
-    type: 'SelectSingleFilter',
+    type: 'SelectMultipleFilter',
     group: 'secondary',
     queryParamNames: ['pub_category'],
     config: {
