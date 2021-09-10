@@ -222,7 +222,7 @@ export class EquipmentListingPageComponent extends Component {
       currentListing.id && currentListing.attributes.state !== LISTING_STATE_PENDING_APPROVAL;
 
     const pendingIsApproved = isPendingApprovalVariant && isApproved;
-    const currrenListingType = currentListing.attributes.publicData.listingType
+    const currentListingType = currentListing.attributes.publicData.listingType
       ? currentListing.attributes.publicData.listingType
       : 'sauna';
     // If a /pending-approval URL is shared, the UI requires
@@ -430,7 +430,7 @@ export class EquipmentListingPageComponent extends Component {
                 onImageCarouselClose={() => this.setState({ imageCarouselOpen: false })}
                 handleViewPhotosClick={handleViewPhotosClick}
                 onManageDisableScrolling={onManageDisableScrolling}
-                listingType={currrenListingType}
+                listingType={currentListingType}
               />
               <div className={css.contentContainer}>
                 <SectionAvatar user={currentAuthor} params={params} />
@@ -442,14 +442,15 @@ export class EquipmentListingPageComponent extends Component {
                     category={category}
                     hostLink={hostLink}
                     showContactUser={showContactUser}
+                    listingType={currentListingType}
                     onContactUser={this.onContactUser}
                   />
                   <SectionDescriptionMaybe
                     description={description}
-                    listingType={currrenListingType}
+                    listingType={currentListingType}
                   />
                   <SectionFeaturesMaybe
-                    listingType={currrenListingType}
+                    listingType={currentListingType}
                     options={equipmentCategoryOptions}
                     publicData={publicData}
                   />

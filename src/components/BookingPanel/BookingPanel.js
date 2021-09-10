@@ -16,7 +16,8 @@ import css from './BookingPanel.module.css';
 
 // This defines when ModalInMobile shows content as Modal
 const MODAL_BREAKPOINT = 1023;
-
+export const SAUNA_LISTING = 'sauna';
+export const EQUIPMENT_LISTING = 'equipment';
 const priceData = (price, intl) => {
   if (price && price.currency === config.currency) {
     const formattedPrice = formatMoney(intl, price);
@@ -78,6 +79,10 @@ const BookingPanel = props => {
   const showClosedListingHelpText = listing.id && isClosed;
   const { formattedPrice, priceTitle } = priceData(price, intl);
   const isBook = !!parse(location.search).book;
+  const listingType =
+    listing.attributes.publicData && listing.attributes.publicData.listingType
+      ? listing.attributes.publicData.listingType
+      : SAUNA_LISTING;
 
   const subTitleText = !!subTitle
     ? subTitle
@@ -87,13 +92,20 @@ const BookingPanel = props => {
 
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
-
-  const unitTranslationKey = isNightly
-    ? 'BookingPanel.perNight'
-    : isDaily
-    ? 'BookingPanel.perDay'
-    : 'BookingPanel.perUnit';
-
+  const getUnitTranslationKey = () => {
+    if (listingType === SAUNA_LISTING) {
+      if (isNightly) {
+        return 'BookingPanel.perNight';
+      } else if (isDaily) {
+        return 'BookingPanel.perDay';
+      } else {
+        return 'BookingPanel.perUnit';
+      }
+    } else if (listingType === EQUIPMENT_LISTING) {
+      return 'BookingPanel.perEquipment';
+    }
+  };
+  const unitTranslationKey = getUnitTranslationKey();
   const classes = classNames(rootClassName || css.root, className);
   const titleClasses = classNames(titleClassName || css.bookingTitle);
 
@@ -147,7 +159,7 @@ const BookingPanel = props => {
           </div>
         </div>
 
-        {showBookingDatesForm ? ( 
+        {showBookingDatesForm ? (
           <Button
             rootClassName={css.bookButton}
             onClick={() => openBookModal(isOwnListing, isClosed, history, location)}

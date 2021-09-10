@@ -218,10 +218,10 @@ export class ListingPageComponent extends Component {
       currentListing.id && currentListing.attributes.state !== LISTING_STATE_PENDING_APPROVAL;
 
     const pendingIsApproved = isPendingApprovalVariant && isApproved;
-    const currrenListingType = currentListing.attributes.publicData.listingType
+    const currentListingType = currentListing.attributes.publicData.listingType
       ? currentListing.attributes.publicData.listingType
       : 'sauna';
-
+    
     // If a /pending-approval URL is shared, the UI requires
     // authentication and attempts to fetch the listing from own
     // listings. This will fail with 403 Forbidden if the author is
@@ -440,15 +440,16 @@ export class ListingPageComponent extends Component {
                     hostLink={hostLink}
                     showContactUser={showContactUser}
                     onContactUser={this.onContactUser}
+                    listingType={currentListingType}
                   />
                   <SectionDescriptionMaybe
                     description={description}
-                    listingType={currrenListingType}
+                    listingType={currentListingType}
                   />
                   <SectionFeaturesMaybe
                     options={amenityOptions}
                     publicData={publicData}
-                    listingType={currrenListingType}
+                    listingType={currentListingType}
                   />
                   <SectionRulesMaybe publicData={publicData} />
                   <SectionViewMaybe options={viewOptions} publicData={publicData} />

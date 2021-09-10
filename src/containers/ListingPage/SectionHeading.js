@@ -5,7 +5,8 @@ import { LINE_ITEM_NIGHT, LINE_ITEM_DAY } from '../../util/types';
 import config from '../../config';
 
 import css from './ListingPage.module.css';
-
+export const SAUNA_LISTING = 'sauna';
+export const EQUIPMENT_LISTING = 'equipment';
 const SectionHeading = props => {
   const {
     priceTitle,
@@ -13,6 +14,7 @@ const SectionHeading = props => {
     richTitle,
     category,
     hostLink,
+    listingType,
     showContactUser,
     onContactUser,
   } = props;
@@ -21,11 +23,20 @@ const SectionHeading = props => {
   const isNightly = unitType === LINE_ITEM_NIGHT;
   const isDaily = unitType === LINE_ITEM_DAY;
 
-  const unitTranslationKey = isNightly
-    ? 'ListingPage.perNight'
-    : isDaily
-    ? 'ListingPage.perDay'
-    : 'ListingPage.perUnit';
+  const getUnitTranslationKey = () => {
+    if (listingType === SAUNA_LISTING) {
+      if (isNightly) {
+        return 'ListingPage.perNight';
+      } else if (isDaily) {
+        return 'ListingPage.perDay';
+      } else {
+        return 'ListingPage.perUnit';
+      }
+    } else if (listingType === EQUIPMENT_LISTING) {
+      return 'ListingPage.perEquipment';
+    }
+  };
+  const unitTranslationKey = getUnitTranslationKey();
 
   return (
     <div className={css.sectionHeading}>
