@@ -92,8 +92,8 @@ const EditListingDescriptionPanel = props => {
         description,
         publicData: {
           equipmentCategory,
-          manufactureYear,
-          maxUsingTimeADay,
+          manufactureYear: Number(manufactureYear),
+          maxUsingTimeADay: Number(maxUsingTimeADay),
           listingType: EQUIPMENT_LISTING,
         },
       };

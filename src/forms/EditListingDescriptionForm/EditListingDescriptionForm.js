@@ -16,6 +16,7 @@ import {
   SAUNA_LISTING,
 } from '../../components/EditListingWizard/EditListingWizard';
 import CustomCategoryMultiSelectFieldMaybe from './CustomCategoryMultiSelectFieldMaybe';
+import CustomMaxUsingTimeADay from './CustomMaxUsingTimeADay';
 
 const TITLE_MAX_LENGTH = 60;
 
@@ -212,6 +213,7 @@ const EditListingDescriptionFormComponent = props => (
             id="manufactureYear"
             name="manufactureYear"
             className={css.title}
+            type="number"
             label={getManufacture().manufactureMessage}
             placeholder={getManufacture().manufacturePlaceholderMessage}
             validate={composeValidators(required(getManufacture().manufactureRequiredMessage))}
@@ -221,6 +223,7 @@ const EditListingDescriptionFormComponent = props => (
         listingType === EQUIPMENT_LISTING ? (
           <FieldTextInput
             id="maxUsingTimeADay"
+            type="number"
             name="maxUsingTimeADay"
             label={getMaxUsingTimeADay().manufactureMessage}
             placeholder={getMaxUsingTimeADay().manufacturePlaceholderMessage}

@@ -148,6 +148,8 @@ export { default as Map } from './Map/Map';
 export { default as OrderDiscussionPanel } from './OrderDiscussionPanel/OrderDiscussionPanel';
 export { default as Page } from './Page/Page';
 export { default as PriceFilter } from './PriceFilter/PriceFilter';
+export { default as MaxUsingTimeADayFilter } from './MaxUsingTimeADayFilter/MaxUsingTimeADayFilter';
+export { default as ManufactureYearFilter } from './ManufactureYearFilter/ManufactureYearFilter'
 export { default as Reviews } from './Reviews/Reviews';
 export { default as SavedCardDetails } from './SavedCardDetails/SavedCardDetails';
 export { default as SearchFiltersMobile } from './SearchFiltersMobile/SearchFiltersMobile';

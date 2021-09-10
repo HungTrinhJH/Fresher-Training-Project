@@ -14,7 +14,6 @@ import {
   SearchFiltersPrimary,
   SearchFiltersSecondary,
   SortBy,
-
 } from '../../components';
 
 import FilterComponent from './FilterComponent';
@@ -170,7 +169,7 @@ class MainPanel extends Component {
       filterConfig,
       sortConfig,
       onMapOpen,
-      isMapOpen
+      isMapOpen,
     } = this.props;
 
     const primaryFilters = filterConfig.filter(f => f.group === 'primary');

@@ -119,6 +119,13 @@ const parseNum = str => {
   return Number.isNaN(num) ? null : num;
 };
 
+export const numberAtLeast = (message, minNumber) => value => {
+  if (value < minNumber) {
+    return message;
+  }
+
+  return VALID;
+};
 export const ageAtLeast = (message, minYears) => value => {
   const { year, month, day } = value;
   const dayNum = parseNum(day);

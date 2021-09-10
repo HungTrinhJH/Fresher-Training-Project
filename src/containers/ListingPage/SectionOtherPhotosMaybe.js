@@ -1,71 +1,36 @@
 import React from 'react';
-import Slider from 'react-slick';
-// import css from './SectionOtherPhotosMaybe.module.css';
+import css from './SectionOtherPhotosMaybe.module.css';
+import { ResponsiveImage } from '../../components';
+import { FormattedMessage } from '../../util/reactIntl';
 
-const SectionOtherPhotosMaybe = () => {
-  const settings = {
-    dots: true,
-    infinite: false,
-    speed: 500,
-    slidesToShow: 4,
-    slidesToScroll: 4,
-    initialSlide: 0,
-    responsive: [
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          dots: true,
-        },
-      },
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 2,
-          slidesToScroll: 2,
-          initialSlide: 2,
-        },
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-        },
-      },
-    ],
-  };
+const OtherImage = props => <ResponsiveImage {...props} />;
+
+const SectionOtherPhotosMaybe = props => {
+  const { listing } = props;
+  const listingIds = listing.attributes.publicData.photos
+    ? listing.attributes.publicData.photos
+    : [];
+
+  // Get other photos only
+  const images = [];
+  for (let img of listing.images) {
+    const idxInListingIds = listingIds.findIndex(photo => photo.id === img.id.uuid);
+    if (listingIds[idxInListingIds].type === 'otherPhoto') {
+      images.push(img);
+    }
+  }
+  const imagesSlider = images.map(img => (
+    <div className={css.imageItem}>
+      <OtherImage image={img} key={img.id.uuid} variants={['landscape-crop']} />
+    </div>
+  ));
+
   return (
     <div>
-      <h2> Responsive </h2>
-      <Slider {...settings}>
-        <div>
-          <h3>1</h3>
-        </div>
-        <div>
-          <h3>2</h3>
-        </div>
-        <div>
-          <h3>3</h3>
-        </div>
-        <div>
-          <h3>4</h3>
-        </div>
-        <div>
-          <h3>5</h3>
-        </div>
-        <div>
-          <h3>6</h3>
-        </div>
-        <div>
-          <h3>7</h3>
-        </div>
-        <div>
-          <h3>8</h3>
-        </div>
-      </Slider>
+      <h3 className={css.title}>
+        <FormattedMessage id="ListingPage.otherPhotosHeading" />
+      </h3>
+      <div className={css.imageWrapper}>{imagesSlider}</div>
     </div>
   );
 };

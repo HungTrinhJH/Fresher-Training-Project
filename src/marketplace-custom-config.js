@@ -61,6 +61,28 @@ export const filters = [
     },
   },
   {
+    id: 'maxUsingTimeADay',
+    label: 'Max using time a day',
+    type: 'MaxUsingTimeADayFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_maxUsingTimeADay'],
+    config: {
+      min: 1,
+      max: 24,
+      step: 1,
+    },
+  },
+  {
+    id: 'manufactureYear',
+    label: 'Manufacture year',
+    type: 'ManufactureYearKeywordFilter',
+    group: 'secondary',
+    queryParamNames: ['pub_manufactureYear'],
+    config: {
+      min: 1990,
+    },
+  },
+  {
     id: 'keyword',
     label: 'Keyword',
     type: 'KeywordFilter',
@@ -76,7 +98,7 @@ export const filters = [
   {
     id: 'category',
     label: 'Category',
-    type: 'SelectSingleFilter',
+    type: 'SelectMultipleFilter',
     group: 'secondary',
     queryParamNames: ['pub_category'],
     config: {
@@ -99,6 +121,7 @@ export const filters = [
     group: 'secondary',
     queryParamNames: ['pub_equipmentCategory'],
     config: {
+      searchMode: 'has_all',
       options: [
         { key: 'math', label: 'Math' },
         { key: 'physics', label: 'Physics' },

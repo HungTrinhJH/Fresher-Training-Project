@@ -392,8 +392,6 @@ export class EquipmentListingPageComponent extends Component {
         </span>
       ) : null;
 
-    //Views
-
     const viewKey = 'view';
     const viewOptions = findOptionsForSelectFilter(viewKey, filterConfig);
 
@@ -465,6 +463,8 @@ export class EquipmentListingPageComponent extends Component {
                     listingId={currentListing.id}
                   />
                   <SectionReviews reviews={reviews} fetchReviewsError={fetchReviewsError} />
+                  <SectionOtherPhotosMaybe listing={currentListing} />
+
                   <SectionHostMaybe
                     title={title}
                     listing={currentListing}
@@ -478,7 +478,6 @@ export class EquipmentListingPageComponent extends Component {
                     currentUser={currentUser}
                     onManageDisableScrolling={onManageDisableScrolling}
                   />
-                  {/* <SectionOtherPhotosMaybe /> */}
                 </div>
                 <BookingPanel
                   className={css.bookingPanel}
