@@ -6,6 +6,7 @@ import {
   SelectSingleFilter,
   SelectMultipleFilter,
   MaxUsingTimeADayFilter,
+  ManufactureYearFilter,
 } from '../../components';
 
 /**
@@ -95,7 +96,19 @@ const FilterComponent = props => {
           {...rest}
         />
       );
-
+    case 'ManufactureYearKeywordFilter':
+      return (
+        <ManufactureYearFilter
+          id={componentId}
+          label={label}
+          name={name}
+          queryParamNames={queryParamNames}
+          initialValues={initialValues(queryParamNames)}
+          onSubmit={getHandleChangedValueFn(useHistoryPush)}
+          {...config}
+          {...rest}
+        />
+      );
     case 'KeywordFilter':
       return (
         <KeywordFilter
