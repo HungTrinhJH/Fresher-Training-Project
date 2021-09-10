@@ -5,6 +5,7 @@ import {
   KeywordFilter,
   SelectSingleFilter,
   SelectMultipleFilter,
+  MaxUsingTimeADayFilter,
 } from '../../components';
 
 /**
@@ -82,6 +83,19 @@ const FilterComponent = props => {
         />
       );
     }
+    case 'MaxUsingTimeADayFilter':
+      return (
+        <MaxUsingTimeADayFilter
+          id={componentId}
+          label={label}
+          queryParamNames={queryParamNames}
+          initialValues={initialValues(queryParamNames)}
+          onSubmit={getHandleChangedValueFn(useHistoryPush)}
+          {...config}
+          {...rest}
+        />
+      );
+
     case 'KeywordFilter':
       return (
         <KeywordFilter

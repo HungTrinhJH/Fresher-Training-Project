@@ -19,7 +19,6 @@ const SectionOtherPhotosMaybe = props => {
       images.push(img);
     }
   }
-  // console.log(images);
   const imagesSlider = images.map(img => (
     <div className={css.imageItem}>
       <OtherImage image={img} key={img.id.uuid} variants={['landscape-crop']} />
