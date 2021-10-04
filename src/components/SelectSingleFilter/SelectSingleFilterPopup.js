@@ -72,7 +72,7 @@ class SelectSingleFilterPopup extends Component {
 
             return (
               <MenuItem key={option.key}>
-                <button
+                <button 
                   className={css.menuItem}
                   onClick={() => this.selectOption(queryParamName, option.key)}
                 >
