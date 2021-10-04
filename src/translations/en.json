@@ -12,6 +12,7 @@
   "ActivityFeed.today": "Today",
   "ActivityFeed.transitionAccept": "{ displayName } accepted the booking request.",
   "ActivityFeed.transitionCancel": "The booking was cancelled.",
+  "ActivityFeed.operatorDecline": "The booking was cancelled.",
   "ActivityFeed.transitionComplete": "The booking was completed. { reviewLink }",
   "ActivityFeed.transitionDecline": "{ displayName } declined the booking request.",
   "ActivityFeed.transitionExpire": "Booking request expired. { displayName } did not reply on time.",
