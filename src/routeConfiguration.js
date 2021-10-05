@@ -162,17 +162,17 @@ const routeConfiguration = () => {
       loadData: pageDataLoadingAPI.ListingPage.loadData,
     },
     {
-      path: '/l/:listingType/:slug/:id',
-      name: 'EquipmentListingPage',
-      component: EquipmentListingPage,
-      loadData: pageDataLoadingAPI.ListingPage.loadData,
-    },
-    {
       path: '/l/:slug/:id/checkout',
       name: 'CheckoutPage',
       auth: true,
       component: CheckoutPage,
       setInitialValues: pageDataLoadingAPI.CheckoutPage.setInitialValues,
+    },
+    {
+      path: '/l/:listingType/:slug/:id',
+      name: 'EquipmentListingPage',
+      component: EquipmentListingPage,
+      loadData: pageDataLoadingAPI.ListingPage.loadData,
     },
     {
       path: '/l/:slug/:id/:variant',

@@ -192,6 +192,7 @@ export class CheckoutPageComponent extends Component {
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.bookingData
+      console.log('Checkout page:', { listingId, bookingStartForAPI, bookingEndForAPI });
       fetchSpeculatedTransaction(
         {
           listingId,
