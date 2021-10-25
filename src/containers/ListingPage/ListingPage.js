@@ -97,15 +97,18 @@ export class ListingPageComponent extends Component {
       params,
       callSetInitialValues,
       onInitializeCardPaymentData,
+      isFirstBooking,
     } = this.props;
     const listingId = new UUID(params.id);
     const listing = getListing(listingId);
 
     const { bookingDates, ...bookingData } = values;
-
     const initialValues = {
       listing,
-      bookingData,
+      bookingData: {
+        ...bookingData,
+        isFirstBooking,
+      },
       bookingDates: {
         bookingStart: bookingDates.startDate,
         bookingEnd: bookingDates.endDate,
@@ -197,6 +200,7 @@ export class ListingPageComponent extends Component {
       fetchLineItemsInProgress,
       fetchLineItemsError,
       match,
+      isFirstBooking,
     } = this.props;
 
     const listingId = new UUID(rawParams.id);
@@ -489,6 +493,7 @@ export class ListingPageComponent extends Component {
                   lineItems={lineItems}
                   fetchLineItemsInProgress={fetchLineItemsInProgress}
                   fetchLineItemsError={fetchLineItemsError}
+                  isFirstBooking={isFirstBooking}
                 />
               </div>
             </div>
@@ -574,6 +579,7 @@ const mapStateToProps = state => {
     fetchLineItemsInProgress,
     fetchLineItemsError,
     enquiryModalOpenForListingId,
+    isFirstBooking,
   } = state.ListingPage;
   const { currentUser } = state.user;
 
@@ -606,6 +612,7 @@ const mapStateToProps = state => {
     fetchLineItemsError,
     sendEnquiryInProgress,
     sendEnquiryError,
+    isFirstBooking,
   };
 };
 

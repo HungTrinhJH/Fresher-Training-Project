@@ -69,6 +69,7 @@ const BookingPanel = props => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
+    isFirstBooking,
   } = props;
 
   const price = listing.attributes.price;
@@ -134,6 +135,7 @@ const BookingPanel = props => {
             lineItems={lineItems}
             fetchLineItemsInProgress={fetchLineItemsInProgress}
             fetchLineItemsError={fetchLineItemsError}
+            isFirstBooking={isFirstBooking}
           />
         ) : null}
       </ModalInMobile>
@@ -147,7 +149,7 @@ const BookingPanel = props => {
           </div>
         </div>
 
-        {showBookingDatesForm ? ( 
+        {showBookingDatesForm ? (
           <Button
             rootClassName={css.bookButton}
             onClick={() => openBookModal(isOwnListing, isClosed, history, location)}

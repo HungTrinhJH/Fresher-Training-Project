@@ -179,11 +179,15 @@ export class CheckoutPageComponent extends Component {
       pageData.bookingDates.bookingEnd &&
       !isBookingCreated;
 
+    console.log('Im here');
+
     if (shouldFetchSpeculatedTransaction) {
       const listingId = pageData.listing.id;
       const transactionId = tx ? tx.id : null;
       const { bookingStart, bookingEnd } = pageData.bookingDates;
+      const { isFirstBooking } = pageData.bookingData;
 
+      console.log('Booking data: ', pageData);
       // Convert picked date to date that will be converted on the API as
       // a noon of correct year-month-date combo in UTC
       const bookingStartForAPI = dateFromLocalToAPI(bookingStart);
@@ -198,6 +202,7 @@ export class CheckoutPageComponent extends Component {
           listingId,
           bookingStart: bookingStartForAPI,
           bookingEnd: bookingEndForAPI,
+          isFirstBooking,
         },
         transactionId
       );
