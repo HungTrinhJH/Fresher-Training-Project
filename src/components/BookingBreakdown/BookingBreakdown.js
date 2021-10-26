@@ -118,11 +118,11 @@ export const BookingBreakdownComponent = props => {
         isProvider={isProvider}
         intl={intl}
       />
-      <LineItemProviderCommissionRefundMaybe
-        transaction={transaction}
-        isProvider={isProvider}
-        intl={intl}
-      />
+        <LineItemProviderCommissionRefundMaybe
+          transaction={transaction}
+          isProvider={isProvider}
+          intl={intl}
+        />
 
       <LineItemTotalPrice transaction={transaction} isProvider={isProvider} intl={intl} />
 
