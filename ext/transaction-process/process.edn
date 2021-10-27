@@ -81,16 +81,16 @@
     {:name :action/stripe-refund-payment}]
    :from :state/accepted
    :to :state/cancelled}
-  {:name :transition/customer-cancel-booking-before-accepted
+  {:name :transition/cancel-booking-before-accepted
    :actor :actor.role/customer
-   :actions []
+   :actions
+   [{:name :action/decline-booking}]
    :from :state/preauthorized
    :to :state/cancel-by-customer}
   {:name :transition/cancel-with-full-refund
    :actor :actor.role/customer
    :actions
-   [{:name :action/cancel-booking}
-    {:name :action/calculate-full-refund}
+   [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}]
    :from :state/cancel-by-customer
    :to :state/cancelled}
@@ -109,16 +109,12 @@
    :actions [{:name :action/post-review-by-provider}]
    :from :state/delivered
    :to :state/reviewed-by-provider}
-  {:name :transition/customer-cancel-booking-after-accepted
+  {:name :transition/cancel-booking-after-accepted
    :actor :actor.role/customer
    :actions 
-   [{:name :action/cancel-booking}
-    {:name :action/calculate-full-refund}
-    {:name :action/stripe-refund-payment}]
+   [{:name :action/cancel-booking}]
    :from :state/accepted
-   :to :state/cancelled
-   }
-  
+   :to :state/cancel-by-customer}
   {:name :transition/review-2-by-provider
    :actor :actor.role/provider
    :actions
