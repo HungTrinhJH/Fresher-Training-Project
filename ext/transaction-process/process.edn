@@ -73,6 +73,50 @@
    :actions [{:name :action/stripe-create-payout}]
    :from :state/accepted
    :to :state/delivered}
+   {
+     :name :transition/pay-to-provider-after-three-days-booking-accepted-at-delivered
+     :at
+     {:fn/ignore-if-past
+      [{:fn/plus
+        [{:fn/timepoint [:time/booking-end]}
+          {:fn/period ["P3D"]}]}]}
+      :actions
+      [{:name :action/stripe-create-payout}]
+      :from :state/delivered
+      :to :state/delivered}
+   {
+     :name :transition/pay-to-provider-after-three-days-booking-accepted-at-provider-reviewed
+     :at
+     {:fn/ignore-if-past
+      [{:fn/plus
+        [{:fn/timepoint [:time/booking-end]}
+          {:fn/period ["P3D"]}]}]}
+      :actions
+      [{:name :action/stripe-create-payout}]
+      :from :state/reviewed-by-provider
+      :to :state/reviewed-by-provider}
+    {
+     :name :transition/pay-to-provider-after-three-days-booking-accepted-at-customer-reviewed
+     :at
+     {:fn/ignore-if-past
+      [{:fn/plus
+        [{:fn/timepoint [:time/booking-end]}
+          {:fn/period ["P3D"]}]}]}
+      :actions
+      [{:name :action/stripe-create-payout}]
+      :from :state/reviewed-by-customer
+      :to :state/reviewed-by-customer}
+    {
+     :name :transition/pay-to-provider-after-three-days-booking-accepted-at-reviewed
+     :at
+     {:fn/ignore-if-past
+      [{:fn/plus
+        [{:fn/timepoint [:time/booking-end]}
+          {:fn/period ["P3D"]}]}]}
+      :actions
+      [{:name :action/stripe-create-payout}]
+      :from :state/reviewed
+      :to :state/reviewed}
   {:name :transition/cancel
    :actor :actor.role/operator
    :actions
@@ -88,14 +132,31 @@
    :from :state/preauthorized
    :to :state/cancel-by-customer}
   {:name :transition/cancel-with-full-refund
-   :actor :actor.role/customer
+  :at
+  {:fn/ignore-if-past
+   [{:fn/min
+   [{:fn/plus
+     [{:fn/timepoint
+       [:time/first-entered-state
+        :state/cancel-by-customer]}
+      {:fn/period ["PT1M"]}]}
+    {:fn/plus
+     [{:fn/timepoint
+       [:time/first-entered-state
+        :state/preauthorized]}
+      {:fn/period ["PT48H"]}]}]}]}
    :actions
    [{:name :action/calculate-full-refund}
     {:name :action/stripe-refund-payment}]
    :from :state/cancel-by-customer
    :to :state/cancelled}
   {:name :transition/cancel-with-no-refund
-   :actor :actor.role/customer
+   :at
+   {:fn/plus
+    [{:fn/timepoint
+      [:time/first-entered-state
+        :state/preauthorized]}
+      {:fn/period ["PT48H"]}]}
    :actions []
    :from :state/cancel-by-customer
    :to :state/cancelled}
@@ -200,3 +261,4 @@
    :on :transition/review-2-by-customer
    :to :actor.role/provider
    :template :review-by-other-party-published}]}
+
