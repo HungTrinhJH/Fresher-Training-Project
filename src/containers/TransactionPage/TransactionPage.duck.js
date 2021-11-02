@@ -12,6 +12,9 @@ import {
   txIsInFirstReviewBy,
   TRANSITION_ACCEPT,
   TRANSITION_DECLINE,
+  TRANSITION_CANCEL_BY_PROVIDER,
+  TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED,
+  TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED,
 } from '../../util/transaction';
 import { transactionLineItems } from '../../util/api';
 import * as log from '../../util/log';
@@ -68,6 +71,10 @@ export const FETCH_LINE_ITEMS_REQUEST = 'app/TransactionPage/FETCH_LINE_ITEMS_RE
 export const FETCH_LINE_ITEMS_SUCCESS = 'app/TransactionPage/FETCH_LINE_ITEMS_SUCCESS';
 export const FETCH_LINE_ITEMS_ERROR = 'app/TransactionPage/FETCH_LINE_ITEMS_ERROR';
 
+export const CANCEL_TRANSACTION_REQUEST = 'app/TransactionPage/CANCEL_TRANSACTION_REQUEST';
+export const CANCEL_TRANSACTION_SUCCESS = 'app/TransactionPage/CANCEL_TRANSACTION_SUCCESS';
+export const CANCEL_TRANSACTION_ERROR = 'app/TransactionPage/CANCEL_TRANSACTION_ERROR';
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -98,6 +105,9 @@ const initialState = {
   lineItems: null,
   fetchLineItemsInProgress: false,
   fetchLineItemsError: null,
+
+  cancelInProgress: false,
+  cancelError: null,
 };
 
 // Merge entity arrays using ids, so that conflicting items in newer array (b) overwrite old values (a).
@@ -139,6 +149,25 @@ export default function checkoutPageReducer(state = initialState, action = {}) {
       return { ...state, acceptInProgress: false };
     case ACCEPT_SALE_ERROR:
       return { ...state, acceptInProgress: false, acceptSaleError: payload };
+
+    case CANCEL_TRANSACTION_REQUEST:
+      return {
+        ...state,
+        cancelInProgress: true,
+        cancelError: null,
+        acceptSaleError: null,
+        declineSaleError: null,
+      };
+
+    case CANCEL_TRANSACTION_SUCCESS: {
+      return {
+        ...state,
+        cancelInProgress: false,
+      };
+    }
+    case CANCEL_TRANSACTION_ERROR: {
+      return { ...state, cancelInProgress: false, cancelError: payload };
+    }
 
     case DECLINE_SALE_REQUEST:
       return { ...state, declineInProgress: true, declineSaleError: null, acceptSaleError: null };
@@ -210,7 +239,12 @@ export const acceptOrDeclineInProgress = state => {
   return state.TransactionPage.acceptInProgress || state.TransactionPage.declineInProgress;
 };
 
+export const cancelInProgress = state => {
+  return state.TransactionPage.cancelInProgress;
+};
+
 // ================ Action creators ================ //
+
 export const setInitialValues = initialValues => ({
   type: SET_INITIAL_VALUES,
   payload: pick(initialValues, Object.keys(initialState)),
@@ -275,6 +309,9 @@ export const fetchLineItemsError = error => ({
   payload: error,
 });
 
+const cancelRequest = () => ({ type: CANCEL_TRANSACTION_REQUEST });
+const cancelSuccess = () => ({ type: CANCEL_TRANSACTION_SUCCESS });
+const cancelError = e => ({ type: CANCEL_TRANSACTION_ERROR, error: true, payload: e });
 // ================ Thunks ================ //
 
 const listingRelationship = txResponse => {
@@ -661,5 +698,79 @@ export const loadData = params => (dispatch, getState) => {
     dispatch(fetchTransaction(txId, txRole)),
     dispatch(fetchMessages(txId, 1)),
     dispatch(fetchNextTransitions(txId)),
+    // dispatch(checkIsFirstBooking()),
   ]);
+};
+
+export const cancelBeforeAccepted = id => (dispatch, getState, sdk) => {
+  if (cancelInProgress(getState())) {
+    return Promise.reject(new Error('Cancel is already in progress'));
+  }
+  dispatch(cancelRequest());
+  return sdk.transactions
+    .transition(
+      { id, transition: TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED, params: {} },
+      { expand: true }
+    )
+    .then(response => {
+      dispatch(addMarketplaceEntities(response));
+      dispatch(cancelSuccess());
+      dispatch(fetchCurrentUserNotifications());
+      return response;
+    })
+    .catch(e => {
+      dispatch(cancelError(storableError(e)));
+      log.error(e, 'reject-sale-failed', {
+        txId: id,
+        transition: TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED,
+      });
+      throw e;
+    });
+};
+export const cancelAfterAccepted = id => (dispatch, getState, sdk) => {
+  if (cancelInProgress(getState())) {
+    return Promise.reject(new Error('Cancel is already in progress'));
+  }
+  dispatch(cancelRequest());
+  return sdk.transactions
+    .transition(
+      { id, transition: TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED, params: {} },
+      { expand: true }
+    )
+    .then(response => {
+      dispatch(addMarketplaceEntities(response));
+      dispatch(cancelSuccess());
+      dispatch(fetchCurrentUserNotifications());
+      return response;
+    })
+    .catch(e => {
+      dispatch(cancelError(storableError(e)));
+      log.error(e, 'reject-sale-failed', {
+        txId: id,
+        transition: TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED,
+      });
+      throw e;
+    });
+};
+export const cancelTransactionByProvider = id => (dispatch, getState, sdk) => {
+  if (cancelInProgress(getState())) {
+    return Promise.reject(new Error('Cancel is already in progress'));
+  }
+  dispatch(cancelRequest());
+  return sdk.transactions
+    .transition({ id, transition: TRANSITION_CANCEL_BY_PROVIDER, params: {} }, { expand: true })
+    .then(response => {
+      dispatch(addMarketplaceEntities(response));
+      dispatch(cancelSuccess());
+      dispatch(fetchCurrentUserNotifications());
+      return response;
+    })
+    .catch(e => {
+      dispatch(cancelError(storableError(e)));
+      log.error(e, 'reject-sale-failed', {
+        txId: id,
+        transition: TRANSITION_CANCEL_BY_PROVIDER,
+      });
+      throw e;
+    });
 };

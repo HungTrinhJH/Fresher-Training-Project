@@ -32,6 +32,7 @@ export const STRIPE_CUSTOMER_REQUEST = 'app/CheckoutPage/STRIPE_CUSTOMER_REQUEST
 export const STRIPE_CUSTOMER_SUCCESS = 'app/CheckoutPage/STRIPE_CUSTOMER_SUCCESS';
 export const STRIPE_CUSTOMER_ERROR = 'app/CheckoutPage/STRIPE_CUSTOMER_ERROR';
 
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -45,6 +46,7 @@ const initialState = {
   initiateOrderError: null,
   confirmPaymentError: null,
   stripeCustomerFetched: false,
+
 };
 
 export default function checkoutPageReducer(state = initialState, action = {}) {
@@ -175,6 +177,7 @@ export const initiateOrder = (orderParams, transactionId) => (dispatch, getState
   const bookingData = {
     startDate: orderParams.bookingStart,
     endDate: orderParams.bookingEnd,
+    isFirstBooking: orderParams.isFirstBooking,
   };
 
   const bodyParams = isTransition

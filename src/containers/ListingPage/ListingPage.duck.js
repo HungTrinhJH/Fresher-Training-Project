@@ -39,6 +39,10 @@ export const SEND_ENQUIRY_REQUEST = 'app/ListingPage/SEND_ENQUIRY_REQUEST';
 export const SEND_ENQUIRY_SUCCESS = 'app/ListingPage/SEND_ENQUIRY_SUCCESS';
 export const SEND_ENQUIRY_ERROR = 'app/ListingPage/SEND_ENQUIRY_ERROR';
 
+export const CHECK_IS_FIRST_BOOKING_REQUEST = 'app/ListingPage/CHECK_IS_FIRST_BOOKING_REQUEST';
+export const CHECK_IS_FIRST_BOOKING_SUCCESS = 'app/ListingPage/CHECK_IS_FIRST_BOOKING_SUCCESS';
+export const CHECK_IS_FIRST_BOOKING_ERROR = 'app/ListingPage/CHECK_IS_FIRST_BOOKING_ERROR';
+
 // ================ Reducer ================ //
 
 const initialState = {
@@ -54,6 +58,10 @@ const initialState = {
   sendEnquiryInProgress: false,
   sendEnquiryError: null,
   enquiryModalOpenForListingId: null,
+
+  checkIsFirstBookingInProgress: false,
+  isFirstBooking: false,
+  checkIsFirstBookingError: null,
 };
 
 const listingPageReducer = (state = initialState, action = {}) => {
@@ -95,6 +103,24 @@ const listingPageReducer = (state = initialState, action = {}) => {
     case SEND_ENQUIRY_ERROR:
       return { ...state, sendEnquiryInProgress: false, sendEnquiryError: payload };
 
+    case CHECK_IS_FIRST_BOOKING_REQUEST:
+      return {
+        ...state,
+        checkIsFirstBookingInProgress: true,
+        checkIsFirstBookingError: null,
+      };
+    case CHECK_IS_FIRST_BOOKING_SUCCESS:
+      return {
+        ...state,
+        isFirstBooking: payload,
+        checkIsFirstBookingInProgress: false,
+      };
+    case CHECK_IS_FIRST_BOOKING_ERROR:
+      return {
+        ...state,
+        checkIsFirstBookingError: payload,
+        checkIsFirstBookingInProgress: false,
+      };
     default:
       return state;
   }
@@ -103,6 +129,19 @@ const listingPageReducer = (state = initialState, action = {}) => {
 export default listingPageReducer;
 
 // ================ Action creators ================ //
+
+export const checkIsFirstBookingRequest = () => ({
+  type: CHECK_IS_FIRST_BOOKING_REQUEST,
+});
+
+export const checkIsFirstBookingSuccess = payload => ({
+  type: CHECK_IS_FIRST_BOOKING_SUCCESS,
+  payload,
+});
+export const checkIsFirstBookingError = error => ({
+  type: CHECK_IS_FIRST_BOOKING_ERROR,
+  payload: error,
+});
 
 export const setInitialValues = initialValues => ({
   type: SET_INITIAL_VALUES,
@@ -314,7 +353,7 @@ export const fetchTransactionLineItems = ({ bookingData, listingId, isOwnListing
 
 export const loadData = (params, search) => dispatch => {
   const listingId = new UUID(params.id);
-
+  dispatch(checkIsFirstBooking());
   const ownListingVariants = [LISTING_PAGE_DRAFT_VARIANT, LISTING_PAGE_PENDING_APPROVAL_VARIANT];
   if (ownListingVariants.includes(params.variant)) {
     return dispatch(showListing(listingId, true));
@@ -328,5 +367,22 @@ export const loadData = (params, search) => dispatch => {
     ]);
   } else {
     return Promise.all([dispatch(showListing(listingId)), dispatch(fetchReviews(listingId))]);
+  }
+};
+
+export const checkIsFirstBooking = () => async (dispatch, getState, sdk) => {
+  dispatch(checkIsFirstBookingRequest());
+
+  const queryTransactionsParams = {
+    only: 'order',
+  };
+  try {
+    const transactionOrderResponse = await sdk.transactions.query(queryTransactionsParams);
+    const orders = transactionOrderResponse.data;
+    console.log('Booking data: ', orders);
+    const isFirstBooking = orders.length === 0;
+    dispatch(checkIsFirstBookingSuccess(isFirstBooking));
+  } catch (err) {
+    dispatch(checkIsFirstBookingError(err));
   }
 };

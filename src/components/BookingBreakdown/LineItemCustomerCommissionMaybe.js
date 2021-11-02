@@ -28,6 +28,10 @@ const LineItemCustomerCommissionMaybe = props => {
 
   // If commission is passed it will be shown as a fee already reduces from the total price
   let commissionItem = null;
+  console.log('formattedCommission - ', {
+    customerCommissionLineItem,
+    transaction,
+  });
 
   if (isCustomer && customerCommissionLineItem) {
     if (!isValidCommission(customerCommissionLineItem)) {
@@ -38,7 +42,6 @@ const LineItemCustomerCommissionMaybe = props => {
 
     const commission = customerCommissionLineItem.lineTotal;
     const formattedCommission = commission ? formatMoney(intl, commission) : null;
-
     commissionItem = (
       <div className={css.lineItem}>
         <span className={css.itemLabel}>

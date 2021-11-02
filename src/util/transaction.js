@@ -34,6 +34,8 @@ export const TRANSITION_EXPIRE_PAYMENT = 'transition/expire-payment';
 export const TRANSITION_ACCEPT = 'transition/accept';
 export const TRANSITION_DECLINE = 'transition/decline';
 
+export const TRANSITION_DECLINE_BY_OPERATOR = 'transition/decline-preauthorized-by-operator';
+
 // The backend automatically expire the transaction.
 export const TRANSITION_EXPIRE = 'transition/expire';
 
@@ -53,6 +55,23 @@ export const TRANSITION_REVIEW_2_BY_CUSTOMER = 'transition/review-2-by-customer'
 export const TRANSITION_EXPIRE_CUSTOMER_REVIEW_PERIOD = 'transition/expire-customer-review-period';
 export const TRANSITION_EXPIRE_PROVIDER_REVIEW_PERIOD = 'transition/expire-provider-review-period';
 export const TRANSITION_EXPIRE_REVIEW_PERIOD = 'transition/expire-review-period';
+export const TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED =
+  'transition/cancel-booking-before-accepted';
+export const TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED = 'transition/cancel-booking-after-accepted';
+export const TRANSITION_CANCEL_WITH_NO_REFUND = 'transition/cancel-with-no-refund';
+export const TRANSITION_CANCEL_WITH_FULL_REFUND = 'transition/cancel-with-full-refund';
+export const TRANSITION_CANCEL_BY_PROVIDER = 'transition/cancel-by-provider';
+export const TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_DELIVERED =
+  'transition/pay-to-provider-after-three-days-at-delivered';
+
+export const TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_CUSTOMER_REVIEWED =
+  'transition/pay-to-provider-after-three-days-at-customer-reviewed';
+
+export const TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_PROVIDER_REVIEWED =
+  'transition/pay-to-provider-after-three-days-at-provider-reviewed';
+
+export const TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_REVIEWED =
+  'transition/pay-to-provider-after-three-days-at-reviewed';
 
 /**
  * Actors
@@ -88,12 +107,14 @@ const STATE_PENDING_PAYMENT = 'pending-payment';
 const STATE_PAYMENT_EXPIRED = 'payment-expired';
 const STATE_PREAUTHORIZED = 'preauthorized';
 const STATE_DECLINED = 'declined';
+const STATE_DECLINED_BY_OPERATOR = 'declined-by-operator';
 const STATE_ACCEPTED = 'accepted';
 const STATE_CANCELED = 'canceled';
 const STATE_DELIVERED = 'delivered';
 const STATE_REVIEWED = 'reviewed';
 const STATE_REVIEWED_BY_CUSTOMER = 'reviewed-by-customer';
 const STATE_REVIEWED_BY_PROVIDER = 'reviewed-by-provider';
+const STATE_CANCEL_BY_CUSTOMER = 'cancel-by-customer';
 
 /**
  * Description of transaction process
@@ -108,7 +129,7 @@ const stateDescription = {
   // id is defined only to support Xstate format.
   // However if you have multiple transaction processes defined,
   // it is best to keep them in sync with transaction process aliases.
-  id: 'flex-default-process/release-1',
+  id: 'hung-test-process/release-1',
 
   // This 'initial' state is a starting point for new transaction
   initial: STATE_INITIAL,
@@ -140,17 +161,26 @@ const stateDescription = {
         [TRANSITION_DECLINE]: STATE_DECLINED,
         [TRANSITION_EXPIRE]: STATE_DECLINED,
         [TRANSITION_ACCEPT]: STATE_ACCEPTED,
+        [TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED]: STATE_CANCEL_BY_CUSTOMER,
       },
     },
 
     [STATE_DECLINED]: {},
+    [STATE_DECLINED_BY_OPERATOR]: {},
     [STATE_ACCEPTED]: {
       on: {
         [TRANSITION_CANCEL]: STATE_CANCELED,
         [TRANSITION_COMPLETE]: STATE_DELIVERED,
+        [TRANSITION_CANCEL_BY_PROVIDER]: STATE_CANCELED,
+        [TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED]: STATE_CANCEL_BY_CUSTOMER,
       },
     },
-
+    [STATE_CANCEL_BY_CUSTOMER]: {
+      on: {
+        [TRANSITION_CANCEL_WITH_FULL_REFUND]: STATE_CANCELED,
+        [TRANSITION_CANCEL_WITH_NO_REFUND]: STATE_CANCELED,
+      },
+    },
     [STATE_CANCELED]: {},
     [STATE_DELIVERED]: {
       on: {
@@ -237,8 +267,12 @@ export const txIsRequested = tx =>
 export const txIsAccepted = tx =>
   getTransitionsToState(STATE_ACCEPTED).includes(txLastTransition(tx));
 
-export const txIsDeclined = tx =>
-  getTransitionsToState(STATE_DECLINED).includes(txLastTransition(tx));
+const transitionsToDeclined = [
+  ...getTransitionsToState(STATE_DECLINED),
+  ...getTransitionsToState(STATE_DECLINED_BY_OPERATOR),
+];
+
+export const txIsDeclined = tx => transitionsToDeclined.includes(txLastTransition(tx));
 
 export const txIsCanceled = tx =>
   getTransitionsToState(STATE_CANCELED).includes(txLastTransition(tx));
@@ -308,6 +342,15 @@ export const isRelevantPastTransition = transition => {
     TRANSITION_REVIEW_1_BY_PROVIDER,
     TRANSITION_REVIEW_2_BY_CUSTOMER,
     TRANSITION_REVIEW_2_BY_PROVIDER,
+    TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_CUSTOMER_REVIEWED,
+    TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_PROVIDER_REVIEWED,
+    TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_DELIVERED,
+    TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_REVIEWED,
+    TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED,
+    TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED,
+    TRANSITION_CANCEL_BY_PROVIDER,
+    TRANSITION_CANCEL_WITH_NO_REFUND,
+    TRANSITION_CANCEL_WITH_FULL_REFUND,
   ].includes(transition);
 };
 

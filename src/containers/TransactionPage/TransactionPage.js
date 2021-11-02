@@ -34,6 +34,9 @@ import {
   sendReview,
   fetchMoreMessages,
   fetchTransactionLineItems,
+  cancelBeforeAccepted,
+  cancelAfterAccepted,
+  cancelTransactionByProvider,
 } from './TransactionPage.duck';
 import css from './TransactionPage.module.css';
 
@@ -81,6 +84,11 @@ export const TransactionPageComponent = props => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
+    onCancelBeforeAccepted,
+    onCancelAfterAccepted,
+    onCancelTransactionByProvider,
+    cancelInProgress,
+    cancelError,
   } = props;
 
   const currentTransaction = ensureTransaction(transaction);
@@ -250,6 +258,11 @@ export const TransactionPageComponent = props => {
       lineItems={lineItems}
       fetchLineItemsInProgress={fetchLineItemsInProgress}
       fetchLineItemsError={fetchLineItemsError}
+      onCancelBeforeAccepted={onCancelBeforeAccepted}
+      onCancelAfterAccepted={onCancelAfterAccepted}
+      onCancelTransactionByProvider={onCancelTransactionByProvider}
+      cancelInProgress={cancelInProgress}
+      cancelError={cancelError}
     />
   ) : (
     loadingOrFailedFetching
@@ -321,7 +334,11 @@ TransactionPageComponent.propTypes = {
   callSetInitialValues: func.isRequired,
   onInitializeCardPaymentData: func.isRequired,
   onFetchTransactionLineItems: func.isRequired,
-
+  onCancelBeforeAccepted: func.isRequired,
+  onCancelAfterAccepted: func.isRequired,
+  onCancelTransactionByProvider: func.isRequired,
+  cancelInProgress: bool,
+  canelError: propTypes.error,
   // line items
   lineItems: array,
   fetchLineItemsInProgress: bool.isRequired,
@@ -364,6 +381,8 @@ const mapStateToProps = state => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
+    cancelInProgress,
+    cancelError,
   } = state.TransactionPage;
   const { currentUser } = state.user;
 
@@ -396,6 +415,8 @@ const mapStateToProps = state => {
     lineItems,
     fetchLineItemsInProgress,
     fetchLineItemsError,
+    cancelInProgress,
+    cancelError,
   };
 };
 
@@ -413,6 +434,10 @@ const mapDispatchToProps = dispatch => {
     onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
     onFetchTransactionLineItems: (bookingData, listingId, isOwnListing) =>
       dispatch(fetchTransactionLineItems(bookingData, listingId, isOwnListing)),
+    onCancelBeforeAccepted: transactionId => dispatch(cancelBeforeAccepted(transactionId)),
+    onCancelAfterAccepted: transactionId => dispatch(cancelAfterAccepted(transactionId)),
+    onCancelTransactionByProvider: transactionId =>
+      dispatch(cancelTransactionByProvider(transactionId)),
   };
 };
 

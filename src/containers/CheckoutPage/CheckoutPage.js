@@ -179,10 +179,12 @@ export class CheckoutPageComponent extends Component {
       pageData.bookingDates.bookingEnd &&
       !isBookingCreated;
 
+
     if (shouldFetchSpeculatedTransaction) {
       const listingId = pageData.listing.id;
       const transactionId = tx ? tx.id : null;
       const { bookingStart, bookingEnd } = pageData.bookingDates;
+      const { isFirstBooking } = pageData.bookingData;
 
       // Convert picked date to date that will be converted on the API as
       // a noon of correct year-month-date combo in UTC
@@ -192,11 +194,13 @@ export class CheckoutPageComponent extends Component {
       // Fetch speculated transaction for showing price in booking breakdown
       // NOTE: if unit type is line-item/units, quantity needs to be added.
       // The way to pass it to checkout page is through pageData.bookingData
+      console.log('Checkout page:', { listingId, bookingStartForAPI, bookingEndForAPI });
       fetchSpeculatedTransaction(
         {
           listingId,
           bookingStart: bookingStartForAPI,
           bookingEnd: bookingEndForAPI,
+          isFirstBooking,
         },
         transactionId
       );

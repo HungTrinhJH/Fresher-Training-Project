@@ -11,12 +11,18 @@ import {
   TRANSITION_CANCEL,
   TRANSITION_COMPLETE,
   TRANSITION_DECLINE,
+  TRANSITION_DECLINE_BY_OPERATOR,
   TRANSITION_EXPIRE,
   TRANSITION_CONFIRM_PAYMENT,
   TRANSITION_REVIEW_1_BY_CUSTOMER,
   TRANSITION_REVIEW_1_BY_PROVIDER,
   TRANSITION_REVIEW_2_BY_CUSTOMER,
   TRANSITION_REVIEW_2_BY_PROVIDER,
+  TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED,
+  TRANSITION_CANCEL_BY_PROVIDER,
+  TRANSITION_CANCEL_WITH_FULL_REFUND,
+  TRANSITION_CANCEL_WITH_NO_REFUND,
+  TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED,
   transitionIsReviewed,
   txIsDelivered,
   txIsInFirstReviewBy,
@@ -131,12 +137,33 @@ const resolveTransitionMessage = (
       ) : (
         <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
       );
+    case TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED:
+    case TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED:
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.OwnTransitionCancelByCustomer" />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" values={{ displayName }} />
+      );
+    case TRANSITION_CANCEL_BY_PROVIDER:
+      return isOwnTransition ? (
+        <FormattedMessage id="ActivityFeed.ownTransitionCancelByProvider" />
+      ) : (
+        <FormattedMessage id="ActivityFeed.transitionCancelByProvider" values={{ displayName }} />
+      );
+
+    case TRANSITION_CANCEL_WITH_FULL_REFUND:
+      return <FormattedMessage id="ActivityFeed.transactionCancelWithFullRefund" />;
+    case TRANSITION_CANCEL_WITH_FULL_REFUND:
+      return <FormattedMessage id="ActivityFeed.transactionCancelWithNoRefund" />;
     case TRANSITION_DECLINE:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionDecline" />
       ) : (
         <FormattedMessage id="ActivityFeed.transitionDecline" values={{ displayName }} />
       );
+    case TRANSITION_DECLINE_BY_OPERATOR:
+      return <FormattedMessage id="ActivityFeed.operatorDecline" />;
+
     case TRANSITION_EXPIRE:
       return txRoleIsProvider(ownRole) ? (
         <FormattedMessage id="ActivityFeed.ownTransitionExpire" />
