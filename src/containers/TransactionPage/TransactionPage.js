@@ -413,6 +413,10 @@ const mapDispatchToProps = dispatch => {
     onInitializeCardPaymentData: () => dispatch(initializeCardPaymentData()),
     onFetchTransactionLineItems: (bookingData, listingId, isOwnListing) =>
       dispatch(fetchTransactionLineItems(bookingData, listingId, isOwnListing)),
+    onCancelBeforeAccepted: transactionId => dispatch(cancelBeforeAccepted(transactionId)),
+    onCancelAfterAccepted: transactionId => dispatch(cancelAfterAccepted(transactionId)),
+    onCancelTransactionByProvider: transactionId =>
+      dispatch(cancelTransactionByProvider(transactionId)),
   };
 };
 
