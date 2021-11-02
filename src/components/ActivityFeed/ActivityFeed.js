@@ -137,22 +137,24 @@ const resolveTransitionMessage = (
       ) : (
         <FormattedMessage id="ActivityFeed.transitionAccept" values={{ displayName }} />
       );
-    case TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED ||
-      TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED ||
-      TRANSITION_CANCEL_WITH_FULL_REFUND ||
-      TRANSITION_CANCEL_WITH_NO_REFUND:
+    case TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED:
+    case TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.OwnTransitionCancelByCustomer" />
       ) : (
         <FormattedMessage id="ActivityFeed.transitionCancelByCustomer" values={{ displayName }} />
       );
-
     case TRANSITION_CANCEL_BY_PROVIDER:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionCancelByProvider" />
       ) : (
         <FormattedMessage id="ActivityFeed.transitionCancelByProvider" values={{ displayName }} />
       );
+
+    case TRANSITION_CANCEL_WITH_FULL_REFUND:
+      return <FormattedMessage id="ActivityFeed.transactionCancelWithFullRefund" />;
+    case TRANSITION_CANCEL_WITH_FULL_REFUND:
+      return <FormattedMessage id="ActivityFeed.transactionCancelWithNoRefund" />;
     case TRANSITION_DECLINE:
       return isOwnTransition ? (
         <FormattedMessage id="ActivityFeed.ownTransitionDecline" />

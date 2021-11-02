@@ -75,9 +75,6 @@ export const CANCEL_TRANSACTION_REQUEST = 'app/TransactionPage/CANCEL_TRANSACTIO
 export const CANCEL_TRANSACTION_SUCCESS = 'app/TransactionPage/CANCEL_TRANSACTION_SUCCESS';
 export const CANCEL_TRANSACTION_ERROR = 'app/TransactionPage/CANCEL_TRANSACTION_ERROR';
 
-export const CHECK_IS_FIRST_BOOKING_REQUEST = 'app/TransactionPage/CHECK_IS_FIRST_BOOKING_REQUEST';
-export const CHECK_IS_FIRST_BOOKING_SUCCESS = 'app/TransactionPage/CHECK_IS_FIRST_BOOKING_SUCCESS';
-export const CHECK_IS_FIRST_BOOKING_ERROR = 'app/TransactionPage/CHECK_IS_FIRST_BOOKING_ERROR';
 // ================ Reducer ================ //
 
 const initialState = {
@@ -111,7 +108,6 @@ const initialState = {
 
   cancelInProgress: false,
   cancelError: null,
-  isFirstBooking: false,
 };
 
 // Merge entity arrays using ids, so that conflicting items in newer array (b) overwrite old values (a).
@@ -248,19 +244,6 @@ export const cancelInProgress = state => {
 };
 
 // ================ Action creators ================ //
-
-export const checkIsFirstBookingRequest = () => ({
-  type: CHECK_IS_FIRST_BOOKING_REQUEST,
-});
-
-export const checkIsFirstBookingSuccess = payload => ({
-  type: CHECK_IS_FIRST_BOOKING_SUCCESS,
-  payload,
-});
-export const checkIsFirstBookingError = error => ({
-  type: CHECK_IS_FIRST_BOOKING_ERROR,
-  payload: error,
-});
 
 export const setInitialValues = initialValues => ({
   type: SET_INITIAL_VALUES,
@@ -715,7 +698,7 @@ export const loadData = params => (dispatch, getState) => {
     dispatch(fetchTransaction(txId, txRole)),
     dispatch(fetchMessages(txId, 1)),
     dispatch(fetchNextTransitions(txId)),
-    dispatch(checkIsFirstBooking()),
+    // dispatch(checkIsFirstBooking()),
   ]);
 };
 
@@ -790,21 +773,4 @@ export const cancelTransactionByProvider = id => (dispatch, getState, sdk) => {
       });
       throw e;
     });
-};
-
-export const checkIsFirstBooking = () => async (dispatch, getState, sdk) => {
-  dispatch(checkIsFirstBookingRequest());
-
-  const queryTransactionsParams = {
-    only: 'order',
-  };
-  try {
-    const transactionOrderResponse = await sdk.transactions.query(queryTransactionsParams);
-    const orders = transactionOrderResponse.data;
-    console.log('Booking data: ', orders);
-    const isFirstBooking = orders.length === 0;
-    dispatch(checkIsFirstBookingSuccess(isFirstBooking));
-  } catch (err) {
-    dispatch(checkIsFirstBookingError(err));
-  }
 };

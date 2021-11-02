@@ -12,6 +12,8 @@
   "ActivityFeed.transitionCancelByCustomer": "{ displayName } cancelled the booking.",
   "ActivityFeed.ownTransitionCancelByProvider": "You cancelled the booking.",
   "ActivityFeed.transitionCancelByProvider": "{ displayName } cancelled the booking.",
+  "ActivityFeed.transactionCancelWithFullRefund": "The booking was cancelled, customer received full refund.",
+  "ActivityFeed.transactionCancelWithNoRefund": "The booking was cancelled, customer received no refund.",
 
   "ActivityFeed.showOlderMessages": "Show older",
   "ActivityFeed.today": "Today",
