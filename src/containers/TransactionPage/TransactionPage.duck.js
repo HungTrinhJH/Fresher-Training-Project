@@ -243,6 +243,10 @@ export const acceptOrDeclineInProgress = state => {
   return state.TransactionPage.acceptInProgress || state.TransactionPage.declineInProgress;
 };
 
+export const cancelInProgress = state => {
+  return state.TransactionPage.cancelInProgress;
+};
+
 // ================ Action creators ================ //
 
 export const checkIsFirstBookingRequest = () => ({

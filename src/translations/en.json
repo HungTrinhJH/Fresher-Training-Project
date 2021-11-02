@@ -1059,7 +1059,7 @@
   "TopbarSearchForm.placeholder": "Search saunas…",
   "TopbarSearchForm.searchHelp": "Tip: You can also search saunas by zip code, for example \"00500\" or city district \"Sörnäinen\".",
   "TransactionPage.deletedListing": "deleted listing",
-  "TransactionPanel.cancelButton": "Cancel",
+  "TransactionPanel.cancelButton": "Cancel booking",
   "TransactionPanel.cancelFailed": "Cancel transaction failed, please check your network and try again",
   "TransactionPage.fetchOrderFailed": "Fetching order data failed.",
   "TransactionPage.fetchSaleFailed": "Fetching sale data failed.",

@@ -18,6 +18,11 @@ import {
   TRANSITION_REVIEW_1_BY_PROVIDER,
   TRANSITION_REVIEW_2_BY_CUSTOMER,
   TRANSITION_REVIEW_2_BY_PROVIDER,
+  TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED,
+  TRANSITION_CANCEL_BY_PROVIDER,
+  TRANSITION_CANCEL_WITH_FULL_REFUND,
+  TRANSITION_CANCEL_WITH_NO_REFUND,
+  TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED,
   transitionIsReviewed,
   txIsDelivered,
   txIsInFirstReviewBy,
@@ -139,8 +144,8 @@ const resolveTransitionMessage = (
         <FormattedMessage id="ActivityFeed.transitionDecline" values={{ displayName }} />
       );
     case TRANSITION_DECLINE_BY_OPERATOR:
-      return <FormattedMessage id="ActivityFeed.operatorDecline"/>
-      
+      return <FormattedMessage id="ActivityFeed.operatorDecline" />;
+
     case TRANSITION_EXPIRE:
       return txRoleIsProvider(ownRole) ? (
         <FormattedMessage id="ActivityFeed.ownTransitionExpire" />

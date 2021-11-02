@@ -453,11 +453,19 @@
 /* Container for SaleActionButtonsMaybe subcomponent */
 .mobileActionButtons {
   display: block;
+ 
 
   @media (--viewportLarge) {
     display: none;
   }
 }
+.cancelMobileButton{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
 
 .desktopActionButtons {
   display: none;
@@ -467,7 +475,10 @@
     margin-bottom: 48px;
   }
 }
-
+.cancelDesktopButton{
+  margin-left: 48px;
+  margin-right: 48px;
+}
 /* BookingPanel subcompnent */
 .bookingPanel {
   margin: 16px 48px 48px 48px;

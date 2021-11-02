@@ -370,7 +370,8 @@ export class TransactionPanelComponent extends Component {
     );
 
     const classes = classNames(rootClassName || css.root, className);
-
+    const cancelButtonDesktopStyles = classNames(css.desktopActionButtons, css.cancelDesktopButton);
+    const cancelButtonMobileStyles = classNames(css.mobileActionButtons, css.cancelMobileButton)
     return (
       <div className={classes}>
         <div className={css.container}>
@@ -446,7 +447,7 @@ export class TransactionPanelComponent extends Component {
               <div className={css.mobileActionButtons}>{saleButtons}</div>
             ) : null}
             {stateData.showOrderCancelButton ? (
-              <div className={css.mobileActionButtons}>{cancelButton}</div>
+              <div className={cancelButtonMobileStyles}>{cancelButton}</div>
             ) : null}
           </div>
 
@@ -497,7 +498,7 @@ export class TransactionPanelComponent extends Component {
                 <div className={css.desktopActionButtons}>{saleButtons}</div>
               ) : null}
               {stateData.showOrderCancelButton ? (
-                <div className={css.desktopActionButtons}>{cancelButton}</div>
+                <div className={cancelButtonDesktopStyles}>{cancelButton}</div>
               ) : null}
             </div>
           </div>
