@@ -8,6 +8,11 @@
   "ActivityFeed.ownTransitionExpire": "Booking request expired. You did not reply on time.",
   "ActivityFeed.ownTransitionRequest": "You requested to book { listingTitle }.",
   "ActivityFeed.ownTransitionReview": "You left a review for { displayName }.",
+  "ActivityFeed.OwnTransitionCancelByCustomer": "You cancelled the booking .",
+  "ActivityFeed.transitionCancelByCustomer": "{ displayName } cancelled the booking.",
+  "ActivityFeed.ownTransitionCancelByProvider": "You cancelled the booking.",
+  "ActivityFeed.transitionCancelByProvider": "{ displayName } cancelled the booking.",
+
   "ActivityFeed.showOlderMessages": "Show older",
   "ActivityFeed.today": "Today",
   "ActivityFeed.transitionAccept": "{ displayName } accepted the booking request.",
