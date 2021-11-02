@@ -162,7 +162,11 @@
    :to :state/cancelled}
   {:name :transition/cancel-by-provider
    :actor :actor.role/provider
-   :actions []
+   :actions [
+     {:name :action/cancel-booking}
+     {:name :action/calculate-full-refund}
+     {:name :action/stripe-refund-payment}
+   ]
    :from :state/accepted
    :to :state/cancelled}
   {:name :transition/review-1-by-provider
