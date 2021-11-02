@@ -55,11 +55,12 @@ export const TRANSITION_REVIEW_2_BY_CUSTOMER = 'transition/review-2-by-customer'
 export const TRANSITION_EXPIRE_CUSTOMER_REVIEW_PERIOD = 'transition/expire-customer-review-period';
 export const TRANSITION_EXPIRE_PROVIDER_REVIEW_PERIOD = 'transition/expire-provider-review-period';
 export const TRANSITION_EXPIRE_REVIEW_PERIOD = 'transition/expire-review-period';
-export const TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED = 'transition/cancel-booking-before-accepted';
+export const TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED =
+  'transition/cancel-booking-before-accepted';
 export const TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED = 'transition/cancel-booking-after-accepted';
 export const TRANSITION_CANCEL_WITH_NO_REFUND = 'transition/cancel-with-no-refund';
 export const TRANSITION_CANCEL_WITH_FULL_REFUND = 'transition/cancel-with-full-refund';
-export const TRANSITION_CANCEL_BY_PROVIDER= 'transition/cancel-by-provider';
+export const TRANSITION_CANCEL_BY_PROVIDER = 'transition/cancel-by-provider';
 export const TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_DELIVERED =
   'transition/pay-to-provider-after-three-days-at-delivered';
 
@@ -72,7 +73,6 @@ export const TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_PROVIDER_REVIEWED =
 export const TRANSITION_PAY_TO_PROVIDER_AFTER_THREE_DAYS_AT_REVIEWED =
   'transition/pay-to-provider-after-three-days-at-reviewed';
 
-export const 
 /**
  * Actors
  *
@@ -115,9 +115,6 @@ const STATE_REVIEWED = 'reviewed';
 const STATE_REVIEWED_BY_CUSTOMER = 'reviewed-by-customer';
 const STATE_REVIEWED_BY_PROVIDER = 'reviewed-by-provider';
 const STATE_CANCEL_BY_CUSTOMER = 'cancel-by-customer';
-
-
-
 
 /**
  * Description of transaction process
@@ -165,7 +162,6 @@ const stateDescription = {
         [TRANSITION_EXPIRE]: STATE_DECLINED,
         [TRANSITION_ACCEPT]: STATE_ACCEPTED,
         [TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED]: STATE_CANCEL_BY_CUSTOMER,
-
       },
     },
 
@@ -175,15 +171,15 @@ const stateDescription = {
       on: {
         [TRANSITION_CANCEL]: STATE_CANCELED,
         [TRANSITION_COMPLETE]: STATE_DELIVERED,
-        [TRANSITION_CANCEL_BY_PROVIDER]:STATE_CANCELED,
-        [TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED]: STATE_CANCEL_BY_CUSTOMER
+        [TRANSITION_CANCEL_BY_PROVIDER]: STATE_CANCELED,
+        [TRANSITION_CANCEL_BOOKING_AFTER_ACCEPTED]: STATE_CANCEL_BY_CUSTOMER,
       },
     },
-    [STATE_CANCEL_BY_CUSTOMER]:{
+    [STATE_CANCEL_BY_CUSTOMER]: {
       on: {
         [TRANSITION_CANCEL_WITH_FULL_REFUND]: STATE_CANCELED,
         [TRANSITION_CANCEL_WITH_NO_REFUND]: STATE_CANCELED,
-      }
+      },
     },
     [STATE_CANCELED]: {},
     [STATE_DELIVERED]: {
@@ -276,8 +272,7 @@ const transitionsToDeclined = [
   ...getTransitionsToState(STATE_DECLINED_BY_OPERATOR),
 ];
 
-export const txIsDeclined = tx =>
-  transitionsToDeclined.includes(txLastTransition(tx));
+export const txIsDeclined = tx => transitionsToDeclined.includes(txLastTransition(tx));
 
 export const txIsCanceled = tx =>
   getTransitionsToState(STATE_CANCELED).includes(txLastTransition(tx));
@@ -355,7 +350,7 @@ export const isRelevantPastTransition = transition => {
     TRANSITION_CANCEL_BOOKING_BEFORE_ACCEPTED,
     TRANSITION_CANCEL_BY_PROVIDER,
     TRANSITION_CANCEL_WITH_NO_REFUND,
-    TRANSITION_CANCEL_WITH_FULL_REFUND
+    TRANSITION_CANCEL_WITH_FULL_REFUND,
   ].includes(transition);
 };
 

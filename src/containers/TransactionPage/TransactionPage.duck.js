@@ -110,7 +110,7 @@ const initialState = {
   fetchLineItemsError: null,
 
   cancelInProgress: false,
-  canelError: null,
+  cancelError: null,
   isFirstBooking: false,
 };
 
